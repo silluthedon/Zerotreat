@@ -22,7 +22,7 @@ const Products = () => {
       name: "পিনাট বাটার বলস",
       features: "হাই ফাইবার, এনার্জি বুস্টার",
       calories: "90 kcal",
-      image: "https://images.pexels.com/photos/1002543/pexels-photo-1002543.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://img.freepik.com/free-photo/baking-snack-dessert-food-white_1203-5944.jpg?semt=ais_hybrid&w=740",
       description: "প্রাকৃতিক পিনাট বাটার দিয়ে তৈরি এনার্জি বল"
     },
     {
