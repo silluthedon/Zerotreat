@@ -1,0 +1,86 @@
+import React from 'react';
+import { Star, Quote } from 'lucide-react';
+
+const Testimonials = () => {
+  const testimonials = [
+    {
+      name: "সিল্লু দ্য বিল্লু",
+      review: "ZeroTreat এর চকলেট ব্রাউনি খেয়ে মনে হয়েছে আসল চকলেট খাচ্ছি! কিন্তু এটা সম্পূর্ণ স্বাস্থ্যকর। ডায়াবেটিক হয়েও নিশ্চিন্তে খেতে পারি।",
+      image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+    },
+    {
+      name: "সবজি",
+      review: "আমি জিমে যাই, তাই প্রোটিন দরকার। ZeroTreat এর স্ন্যাক্সগুলো হাই প্রোটিন এবং খুবই টেস্টি। এখন টিফিনের সমস্যা সমাধান!",
+      image: "https://images.pexels.com/photos/1484810/pexels-photo-1484810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+    },
+    {
+      name: "রাইসা",
+      review: "বাচ্চাদের জন্য স্বাস্থ্যকর স্ন্যাক্স খুঁজছিলাম। ZeroTreat এর কুকিজ দারুণ! বাচ্চারা খুশি, আমিও নিশ্চিন্ত যে তারা ভালো খাবার খাচ্ছে।",
+      image: "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+    }
+  ];
+
+  return (
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            গ্রাহকদের মতামত
+          </h2>
+          <p className="text-lg text-gray-600">
+            আমাদের সন্তুষ্ট গ্রাহকদের অভিজ্ঞতা শুনুন
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <div 
+              key={index} 
+              className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative"
+            >
+              <div className="absolute top-4 right-4 text-green-500">
+                <Quote className="h-8 w-8 opacity-20" />
+              </div>
+              
+              <div className="flex items-center mb-6">
+                <img 
+                  src={testimonial.image} 
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-full object-cover mr-4"
+                />
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">
+                    {testimonial.name}
+                  </h3>
+                  <div className="flex space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <p className="text-gray-700 leading-relaxed italic">
+                "{testimonial.review}"
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center space-x-2 bg-green-100 px-6 py-3 rounded-full">
+            <div className="flex space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+              ))}
+            </div>
+            <span className="text-gray-700 font-semibold">৪.৯/৫ রেটিং</span>
+            <span className="text-gray-500">৫০০+ রিভিউ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Testimonials;
