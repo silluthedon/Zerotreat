@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Leaf } from 'lucide-react';
+import { Menu, X, Leaf, LogIn } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,6 +50,13 @@ const Header = () => {
             >
               Order Now
             </Link>
+            <Link 
+              to="/login" 
+              className="text-gray-700 hover:text-green-600 transition-colors flex items-center space-x-1"
+            >
+              <LogIn className="h-5 w-5" />
+              <span>Admin Login</span>
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -90,6 +97,14 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Order Now
+              </Link>
+              <Link 
+                to="/login" 
+                className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors flex items-center space-x-1"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <LogIn className="h-5 w-5" />
+                <span>Admin Login</span>
               </Link>
             </div>
           </div>

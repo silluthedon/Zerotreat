@@ -1,41 +1,115 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Leaf } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
-const Order = () => {
-  const [formData, setFormData] = useState({
+interface FormData {
+  name: string;
+  phone: string;
+  address: string;
+  product: string;
+  quantity: number;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+
+const Order: React.FC = () => {
+  const location = useLocation();
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     phone: '',
     address: '',
-    product: '',
-    quantity: 1
+    product: location.state?.productId || '',
+    quantity: 1,
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const products = [
-    { id: 'brownie', name: 'চকলেট প্রোটিন ব্রাউনি', price: 250 },
-    { id: 'cupcake', name: 'লেমন কেটো কাপকেক', price: 200 },
-    { id: 'balls', name: 'পিনাট বাটার বলস', price: 180 },
-    { id: 'cookies', name: 'কোকো স্মার্ট কুকিজ', price: 220 }
-  ];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('id, name, price');
+        if (error) {
+          throw error;
+        }
+        setProducts(data || []);
+      } catch (error: any) {
+        setError('Error loading products.');
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (location.state?.productId) {
+      setFormData((prev) => ({
+        ...prev,
+        product: location.state.productId,
+      }));
+    }
+  }, [location.state]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    console.log('Order submitted:', formData);
-    setIsSubmitted(true);
+    setError(null);
+
+    const selectedProduct = products.find((p) => p.id === formData.product);
+    if (!selectedProduct) {
+      setError('অনুগ্রহ করে একটি পণ্য নির্বাচন করুন');
+      return;
+    }
+
+    const orderData = {
+      name: formData.name,
+      phone: formData.phone,
+      address: formData.address,
+      product_id: formData.product,
+      product_name: selectedProduct.name,
+      quantity: parseInt(formData.quantity.toString()),
+      total_price: selectedProduct.price * formData.quantity,
+    };
+
+    try {
+      const { error } = await supabase.from('orders').insert([orderData]);
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('Order submitted:', orderData);
+      setIsSubmitted(true);
+    } catch (error: any) {
+      console.error('Error saving order:', error.message);
+      setError('অর্ডার সংরক্ষণে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
+    }
   };
 
-  const selectedProduct = products.find(p => p.id === formData.product);
+  const selectedProduct = products.find((p) => p.id === formData.product);
   const totalPrice = selectedProduct ? selectedProduct.price * formData.quantity : 0;
+
+  if (loading) {
+    return <p className="text-center text-gray-600">Loading...</p>;
+  }
 
   if (isSubmitted) {
     return (
@@ -50,7 +124,7 @@ const Order = () => {
               আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।
             </p>
           </div>
-          
+
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <h3 className="font-semibold text-gray-900 mb-2">অর্ডার বিবরণ:</h3>
             <p className="text-sm text-gray-600">নাম: {formData.name}</p>
@@ -60,8 +134,8 @@ const Order = () => {
             <p className="text-sm font-semibold text-green-600">মোট: ৳{totalPrice}</p>
           </div>
 
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -82,8 +156,8 @@ const Order = () => {
               <Leaf className="h-8 w-8 text-green-500" />
               <span className="text-2xl font-bold text-green-600">ZeroTreat</span>
             </Link>
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -103,6 +177,12 @@ const Order = () => {
             এখনই আপনার স্বাস্থ্যকর স্ন্যাক্স অর্ডার করুন! প্রতি রবিবার ঢাকার মধ্যে ডেলিভারি।
           </p>
         </div>
+
+        {error && (
+          <div className="mb-6 text-red-600 text-center">
+            {error}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Order Form */}
@@ -165,7 +245,7 @@ const Order = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                 >
                   <option value="">একটি পণ্য বেছে নিন</option>
-                  {products.map(product => (
+                  {products.map((product) => (
                     <option key={product.id} value={product.id}>
                       {product.name} - ৳{product.price}
                     </option>
@@ -201,7 +281,6 @@ const Order = () => {
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="text-xl font-bold text-gray-900 mb-6">অর্ডার সারসংক্ষেপ</h3>
-              
               {selectedProduct ? (
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">

@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Clock } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
-const OrderDelivery = () => {
+const OrderDelivery: React.FC = () => {
+  const [deliveryDays, setDeliveryDays] = useState<string[]>(['রবিবার']);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchDeliveryDays = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('delivery_days')
+          .select('days')
+          .single();
+        if (error) {
+          throw error;
+        }
+        setDeliveryDays(data?.days || ['রবিবার']);
+      } catch (error: any) {
+        console.error('ডেলিভারি দিন লোড করতে ত্রুটি:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeliveryDays();
+  }, []);
+
   return (
     <section className="py-20 bg-green-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +54,9 @@ const OrderDelivery = () => {
               <Calendar className="h-8 w-8 text-green-500" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">ডেলিভারি</h3>
-            <p className="text-gray-600">প্রতি রবিবার (ঢাকার মধ্যে)</p>
+            <p className="text-gray-600">
+              {loading ? 'লোডিং...' : `প্রতি ${deliveryDays.join(', ')} (ঢাকার মধ্যে)`}
+            </p>
           </div>
 
           <div className="text-center p-6 bg-white rounded-xl shadow-md">
@@ -49,11 +76,11 @@ const OrderDelivery = () => {
             <p className="text-gray-600 mb-6">
               সীমিত স্লট পাওয়া যাচ্ছে। আপনার পছন্দের স্বাস্থ্যকর স্ন্যাক্স অর্ডার করতে দেরি করবেন না!
             </p>
-            <Link 
-              to="/order" 
+            <Link
+              to="/order"
               className="inline-flex items-center space-x-2 bg-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-600 transition-all duration-200"
             >
-              <span>Order Now</span>
+              <span>এখনই অর্ডার করুন</span>
             </Link>
           </div>
         </div>

@@ -1,38 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
-const Products = () => {
-  const products = [
-    {
-      name: "চকলেট প্রোটিন ব্রাউনি",
-      features: "সুগার ফ্রি, ১২ গ্রাম প্রোটিন",
-      calories: "180 kcal",
-      image: "https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "রিচ চকলেট ফ্লেভার সহ হাই প্রোটিন ব্রাউনি"
-    },
-    {
-      name: "লেমন কেটো কাপকেক",
-      features: "গ্লুটেন ফ্রি, হালকা টেক্সচার",
-      calories: "140 kcal",
-      image: "https://images.pexels.com/photos/1028714/pexels-photo-1028714.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "সতেজ লেমন ফ্লেভার সহ কেটো-ফ্রেন্ডলি কাপকেক"
-    },
-    {
-      name: "পিনাট বাটার বলস",
-      features: "হাই ফাইবার, এনার্জি বুস্টার",
-      calories: "90 kcal",
-      image: "https://img.freepik.com/free-photo/baking-snack-dessert-food-white_1203-5944.jpg?semt=ais_hybrid&w=740",
-      description: "প্রাকৃতিক পিনাট বাটার দিয়ে তৈরি এনার্জি বল"
-    },
-    {
-      name: "কোকো স্মার্ট কুকিজ",
-      features: "লো কার্ব, হেলদি টিফিন",
-      calories: "110 kcal",
-      image: "https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "ক্রিস্পি টেক্সচার সহ স্বাস্থ্যকর কোকো কুকিজ"
-    }
-  ];
+interface Product {
+  id: string;
+  name: string;
+  features: string;
+  calories: string;
+  price: number;
+  image: string;
+  description: string;
+}
+
+const Products: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('id, name, features, calories, price, image, description')
+          .order('name', { ascending: true });
+
+        if (error) {
+          throw error;
+        }
+
+        setProducts(data || []);
+      } catch (error: any) {
+        setError('পণ্য লোড করতে ত্রুটি হয়েছে।');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center text-gray-600 py-20">লোড হচ্ছে...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-600 py-20">{error}</p>;
+  }
 
   return (
     <section id="products" className="py-20 bg-white">
@@ -47,14 +62,14 @@ const Products = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <div 
-              key={index} 
+          {products.map((product) => (
+            <div
+              key={product.id}
               className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
               <div className="relative overflow-hidden">
-                <img 
-                  src={product.image} 
+                <img
+                  src={product.image}
                   alt={product.name}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -62,7 +77,7 @@ const Products = () => {
                   {product.calories}
                 </div>
               </div>
-              
+
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   {product.name}
@@ -70,12 +85,16 @@ const Products = () => {
                 <p className="text-green-600 font-semibold mb-2">
                   {product.features}
                 </p>
+                <p className="text-gray-600 mb-2">
+                  দাম: ৳{product.price}
+                </p>
                 <p className="text-gray-600 mb-4">
                   {product.description}
                 </p>
-                
-                <Link 
-                  to="/order" 
+
+                <Link
+                  to="/order"
+                  state={{ productId: product.id, productName: product.name, productPrice: product.price }}
                   className="inline-flex items-center space-x-2 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors duration-200 justify-center"
                 >
                   <ShoppingCart className="h-4 w-4" />
