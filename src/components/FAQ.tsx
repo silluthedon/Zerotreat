@@ -74,12 +74,6 @@ const FAQ = () => {
           <p className="text-gray-600 mb-4">
             আরও প্রশ্ন আছে? আমাদের সাথে যোগাযোগ করুন
           </p>
-          <a 
-            href="mailto:hello@zerotreat.com" 
-            className="text-green-600 font-semibold hover:text-green-700 transition-colors"
-          >
-            hello@zerotreat.com
-          </a>
         </div>
       </div>
     </section>
