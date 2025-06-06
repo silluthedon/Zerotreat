@@ -45,12 +45,6 @@ const Header = () => {
               About
             </button>
             <Link 
-              to="/order" 
-              className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition-colors font-medium"
-            >
-              Order Now
-            </Link>
-            <Link 
               to="/login" 
               className="text-gray-700 hover:text-green-600 transition-colors flex items-center space-x-1"
             >
@@ -91,13 +85,6 @@ const Header = () => {
               >
                 About
               </button>
-              <Link 
-                to="/order" 
-                className="block mx-3 mt-4 bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition-colors font-medium text-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Order Now
-              </Link>
               <Link 
                 to="/login" 
                 className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors flex items-center space-x-1"

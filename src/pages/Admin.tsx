@@ -26,6 +26,7 @@ const Admin: React.FC = () => {
   const [searchPhone, setSearchPhone] = useState<string>('');
   const [sortField, setSortField] = useState<string>('created_at');
   const [sortOrder, setSortOrder] = useState<string>('desc');
+  const [showLogoutPopup, setShowLogoutPopup] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const Admin: React.FC = () => {
         setOrders(data || []);
         setFilteredOrders(data || []);
       } catch (error: any) {
-        setError('Error loading orders.');
+        setError('অর্ডার লোড করতে ত্রুটি হয়েছে।');
         console.error(error.message);
       } finally {
         setLoading(false);
@@ -75,12 +76,21 @@ const Admin: React.FC = () => {
       if (error) {
         throw error;
       }
-      navigate('/login');
+      navigate('/');
     } catch (error: any) {
-      setError('Error during logout. Try again.');
+      setError('লগআউট করতে ত্রুটি হয়েছে। আবার চেষ্টা করুন।');
     } finally {
       setIsLoggingOut(false);
+      setShowLogoutPopup(false);
     }
+  };
+
+  const handleBackToHomeClick = () => {
+    setShowLogoutPopup(true);
+  };
+
+  const handleCancelLogout = () => {
+    setShowLogoutPopup(false);
   };
 
   const handleSort = (field: string) => {
@@ -112,7 +122,7 @@ const Admin: React.FC = () => {
         )
       );
     } catch (error: any) {
-      setError(`Error updating status: ${error.message}`);
+      setError(`স্ট্যাটাস আপডেট করতে ত্রুটি: ${error.message}`);
     }
   };
 
@@ -152,13 +162,13 @@ const Admin: React.FC = () => {
               <p className="text-2xl font-bold text-green-700">ZeroTreat</p>
             </Link>
             <div className="flex items-center space-x-4">
-              <Link
-                to="/"
+              <button
+                onClick={handleBackToHomeClick}
                 className="text-gray-900 hover:text-green-600 transition-colors font-medium flex items-center space-x-1"
               >
                 <ArrowLeft className="h-5 w-5" />
-                <span>Back to Home</span>
-              </Link>
+                <span>হোমে ফিরে যান</span>
+              </button>
               <Link
                 to="/AdminPrice"
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
@@ -178,24 +188,52 @@ const Admin: React.FC = () => {
                 className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center space-x-2"
               >
                 <LogOut className="h-5 w-5" />
-                <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+                <span>{isLoggingOut ? 'লগআউট হচ্ছে...' : 'লগআউট'}</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Logout Confirmation Popup */}
+      {showLogoutPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">লগআউট নিশ্চিত করুন</h2>
+            <p className="text-gray-600 mb-6">
+              আপনি কি হোম পেজে ফিরে যাওয়ার আগে লগআউট করতে চান?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handleCancelLogout}
+                className="px-4 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                বাতিল
+              </button>
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center space-x-2"
+              >
+                <LogOut className="h-5 w-5" />
+                <span>{isLoggingOut ? 'লগআউট হচ্ছে...' : 'লগআউট'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Orders List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          Order List
+          অর্ডার তালিকা
         </h1>
 
         {/* Search and Sort Controls */}
         <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <input
             type="text"
-            placeholder="Search by Phone Number"
+            placeholder="ফোন নম্বর দিয়ে অনুসন্ধান করুন"
             value={searchPhone}
             onChange={(e) => setSearchPhone(e.target.value)}
             className="w-full sm:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
@@ -206,16 +244,16 @@ const Admin: React.FC = () => {
               onChange={(e) => handleSort(e.target.value)}
               className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
             >
-              <option value="created_at">Date</option>
-              <option value="total_price">Total Price</option>
-              <option value="name">Name</option>
-              <option value="phone">Phone</option>
+              <option value="created_at">তারিখ</option>
+              <option value="total_price">মোট মূল্য</option>
+              <option value="name">নাম</option>
+              <option value="phone">ফোন</option>
             </select>
             <button
               onClick={() => handleSort(sortField)}
               className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
             >
-              {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+              {sortOrder === 'asc' ? 'ঊর্ধ্বক্রম' : 'নিম্নক্রম'}
             </button>
           </div>
         </div>
@@ -227,43 +265,43 @@ const Admin: React.FC = () => {
         )}
 
         {loading ? (
-          <p className="text-center text-gray-600">Loading...</p>
+          <p className="text-center text-gray-600">লোডিং...</p>
         ) : filteredOrders.length === 0 ? (
-          <p className="text-center text-gray-600">No orders found.</p>
+          <p className="text-center text-gray-600">কোনো অর্ডার পাওয়া যায়নি।</p>
         ) : (
           <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Name
+                    নাম
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Phone
+                    ফোন
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Address
+                    ঠিকানা
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Product
+                    পণ্য
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Quantity
+                    পরিমাণ
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Total
+                    মোট
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Date
+                    তারিখ
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Order Status
+                    অর্ডার স্ট্যাটাস
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Delivery Status
+                    ডেলিভারি স্ট্যাটাস
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    Payment Status
+                    পেমেন্ট স্ট্যাটাস
                   </th>
                 </tr>
               </thead>
@@ -303,13 +341,13 @@ const Admin: React.FC = () => {
                         )}`}
                       >
                         <option value="pending" className="bg-yellow-100 text-yellow-800">
-                          Pending
+                          পেন্ডিং
                         </option>
                         <option value="confirmed" className="bg-green-100 text-green-800">
-                          Confirmed
+                          কনফার্মড
                         </option>
                         <option value="cancelled" className="bg-red-100 text-red-800">
-                          Cancelled
+                          বাতিল
                         </option>
                       </select>
                     </td>
@@ -325,13 +363,13 @@ const Admin: React.FC = () => {
                         )}`}
                       >
                         <option value="not_shipped" className="bg-gray-100 text-gray-800">
-                          Not Shipped
+                          শিপড নয়
                         </option>
                         <option value="shipped" className="bg-blue-100 text-blue-800">
-                          Shipped
+                          শিপড
                         </option>
                         <option value="delivered" className="bg-green-100 text-green-800">
-                          Delivered
+                          ডেলিভারড
                         </option>
                       </select>
                     </td>
@@ -347,13 +385,13 @@ const Admin: React.FC = () => {
                         )}`}
                       >
                         <option value="unpaid" className="bg-orange-100 text-orange-800">
-                          Unpaid
+                          পেইড নয়
                         </option>
                         <option value="paid" className="bg-green-100 text-green-800">
-                          Paid
+                          পেইড
                         </option>
                         <option value="failed" className="bg-red-100 text-red-800">
-                          Failed
+                          ব্যর্থ
                         </option>
                       </select>
                     </td>
