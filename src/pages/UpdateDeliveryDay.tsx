@@ -1,176 +1,177 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Leaf, LogOut, Save } from 'lucide-react';
+import { ArrowLeft, Calendar } from 'lucide-react';
 import { supabase } from '../utils/supabase';
-import toast, { Toaster } from 'react-hot-toast';
 
-const UpdateDeliveryDay: React.FC = () => {
-  const [deliveryDays, setDeliveryDays] = useState<string[]>([]);
+const UpdateDeliveryDate: React.FC = () => {
+  const [deliveryDays, setDeliveryDays] = useState<string[]>(['রবিবার']);
+  const [deliveryCharge, setDeliveryCharge] = useState<number>(50);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const allDays = [
-    'রবিবার', // Sunday
-    'সোমবার', // Monday
-    'মঙ্গলবার', // Tuesday
-    'বুধবার', // Wednesday
-    'বৃহস্পতিবার', // Thursday
-    'শুক্রবার', // Friday
-    'শনিবার', // Saturday
+  const dayOptions = [
+    'রবিবার',
+    'সোমবার',
+    'মঙ্গলবার',
+    'বুধবার',
+    'বৃহস্পতিবার',
+    'শুক্রবার',
+    'শনিবার',
   ];
 
   useEffect(() => {
-    const checkSessionAndFetch = async () => {
+    const fetchDeliveryInfo = async () => {
       try {
-        const { data: sessionData } = await supabase.auth.getSession();
-        if (!sessionData.session) {
-          navigate('/login');
-          return;
-        }
-
         const { data, error } = await supabase
-          .from('delivery_days')
-          .select('days')
+          .from('delivery_info')
+          .select('days, charge')
           .single();
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
         setDeliveryDays(data?.days || ['রবিবার']);
+        setDeliveryCharge(data?.charge || 50);
       } catch (error: any) {
-        setError('ডেলিভারি দিন লোড করতে ত্রুটি হয়েছে।');
-        console.error(error.message);
+        setError('ডেলিভারি তথ্য লোড করতে ত্রুটি: ' + error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    checkSessionAndFetch();
-  }, [navigate]);
+    fetchDeliveryInfo();
+  }, []);
 
-  const handleDayToggle = (day: string) => {
+  const handleDayChange = (day: string) => {
     setDeliveryDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+      prev.includes(day)
+        ? prev.filter((d) => d !== day)
+        : [...prev, day]
     );
   };
 
-  const handleSaveDays = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+
     if (deliveryDays.length === 0) {
       setError('অন্তত একটি ডেলিভারি দিন নির্বাচন করুন।');
       return;
     }
 
+    if (deliveryCharge < 0) {
+      setError('ডেলিভারি চার্জ নেগেটিভ হতে পারে না।');
+      return;
+    }
+
     try {
       const { error } = await supabase
-        .from('delivery_days')
-        .update({ days: deliveryDays, updated_at: new Date().toISOString() })
-        .eq('id', (await supabase.from('delivery_days').select('id').single()).data?.id);
-      if (error) {
-        throw error;
-      }
-      setError(null);
-      toast.success('ডেলিভারি দিন সফলভাবে আপডেট করা হয়েছে!', {
-        position: 'top-right',
-        duration: 3000,
-      });
+        .from('delivery_info')
+        .upsert({ id: 1, days: deliveryDays, charge: deliveryCharge });
+      if (error) throw error;
+      setSuccess('ডেলিভারি তথ্য সফলভাবে আপডেট করা হয়েছে।');
+      setTimeout(() => navigate('/admin'), 2000);
     } catch (error: any) {
-      setError('ডেলিভারি দিন আপডেট করতে ত্রুটি হয়েছে।');
-      console.error(error.message);
-    }
-  };
-
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw error;
-      }
-      navigate('/login');
-    } catch (error: any) {
-      setError('লগআউট করতে ত্রুটি হয়েছে। আবার চেষ্টা করুন।');
-    } finally {
-      setIsLoggingOut(false);
+      setError('ডেলিভারি তথ্য আপডেট করতে ত্রুটি: ' + error.message);
     }
   };
 
   if (loading) {
-    return <p className="text-center text-gray-600">লোডিং...</p>;
+    return (
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-amber-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">লোড হচ্ছে...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Toaster />
-      {/* Header */}
-      <div className="bg-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <Leaf className="h-8 w-8 text-green-600" />
-              <p className="text-2xl font-bold text-green-700">ZeroTreat</p>
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-gray-100">
+      <div className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-extrabold text-amber-500">ZeroTreat</h1>
+            <Link
+              to="/admin"
+              className="flex items-center space-x-2 text-gray-600 hover:text-amber-500 transition-colors duration-200"
+            >
+              <ArrowLeft className="h-5 w-5" />
+              <span className="font-medium">অ্যাডমিন প্যানেলে ফিরে যান</span>
             </Link>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/admin"
-                className="text-gray-900 hover:text-green-600 transition-colors font-medium flex items-center space-x-1"
-              >
-                <ArrowLeft className="h-5 w-5" />
-                <span>অ্যাডমিনে ফিরে যান</span>
-              </Link>
-              <button
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-                className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center space-x-2"
-              >
-                <LogOut className="h-5 w-5" />
-                <span>{isLoggingOut ? 'লগআউট হচ্ছে...' : 'লগআউট'}</span>
-              </button>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Delivery Days Update Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          ডেলিভারি দিন আপডেট করুন
-        </h1>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            ডেলিভারি তথ্য আপডেট করুন
+          </h2>
 
-        {error && (
-          <div className="mb-6 text-red-600 text-center">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="mb-6 text-red-600 bg-red-100 p-4 rounded-xl shadow-md">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="mb-6 text-green-600 bg-green-100 p-4 rounded-xl shadow-md">
+              {success}
+            </div>
+          )}
 
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {allDays.map((day) => (
-              <label key={day} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={deliveryDays.includes(day)}
-                  onChange={() => handleDayToggle(day)}
-                  className="h-5 w-5 text-green-600 focus:ring-green-600"
-                />
-                <span className="text-gray-900">{day}</span>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                ডেলিভারি দিন নির্বাচন করুন *
               </label>
-            ))}
-          </div>
+              <div className="grid grid-cols-2 gap-4">
+                {dayOptions.map((day) => (
+                  <label key={day} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={deliveryDays.includes(day)}
+                      onChange={() => handleDayChange(day)}
+                      className="h-4 w-4 text-amber-500 focus:ring-amber-500 border-gray-300 rounded"
+                    />
+                    <span className="text-gray-700">{day}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
 
-          <div className="mt-6 flex justify-end">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                ডেলিভারি চার্জ (টাকা) *
+              </label>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="number"
+                  value={deliveryCharge}
+                  onChange={(e) => setDeliveryCharge(parseInt(e.target.value) || 0)}
+                  min="0"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100"
+                  placeholder="ডেলিভারি চার্জ লিখুন"
+                />
+              </div>
+            </div>
+
             <button
-              onClick={handleSaveDays}
-              className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-colors flex items-center space-x-2"
+              type="submit"
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg text-lg font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
-              <Save className="h-5 w-5" />
-              <span>ডেলিভারি দিন সংরক্ষণ করুন</span>
+              <span className="flex items-center justify-center space-x-2">
+                <Calendar className="h-5 w-5" />
+                <span>ডেলিভারি তথ্য আপডেট করুন</span>
+              </span>
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
 
-export default UpdateDeliveryDay;
+export default UpdateDeliveryDate;

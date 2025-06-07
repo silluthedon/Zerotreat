@@ -28,55 +28,55 @@ const FAQ = () => {
   };
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            সচরাচর জিজ্ঞাসিত প্রশ্ন
-          </h2>
-          <p className="text-lg text-gray-600">
-            আপনার মনে থাকা প্রশ্নগুলোর উত্তর পেয়ে যান
-          </p>
-        </div>
+   <section className="py-20 bg-white">
+  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        সচরাচর জিজ্ঞাসিত প্রশ্ন
+      </h2>
+      <p className="text-lg text-gray-600">
+        আপনার মনে থাকা প্রশ্নগুলোর উত্তর পেয়ে যান
+      </p>
+    </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className="border border-gray-200 rounded-xl overflow-hidden"
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50 flex justify-between items-center transition-colors duration-200"
-              >
-                <h3 className="text-lg font-semibold text-gray-900 pr-4">
-                  {faq.question}
-                </h3>
-                {openIndex === index ? (
-                  <ChevronUp className="h-5 w-5 text-green-500 flex-shrink-0" />
-                ) : (
-                  <ChevronDown className="h-5 w-5 text-green-500 flex-shrink-0" />
-                )}
-              </button>
-              
-              {openIndex === index && (
-                <div className="px-6 pb-4 bg-gray-50">
-                  <p className="text-gray-700 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              )}
+    <div className="space-y-4">
+      {faqs.map((faq, index) => (
+        <div 
+          key={index} 
+          className="border border-gray-200 rounded-xl overflow-hidden"
+        >
+          <button
+            onClick={() => toggleFAQ(index)}
+            className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50 flex justify-between items-center transition-colors duration-200"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 pr-4">
+              {faq.question}
+            </h3>
+            {openIndex === index ? (
+              <ChevronUp className="h-5 w-5 text-coffee-500 flex-shrink-0" />
+            ) : (
+              <ChevronDown className="h-5 w-5 text-coffee-500 flex-shrink-0" />
+            )}
+          </button>
+          
+          {openIndex === index && (
+            <div className="px-6 pb-4 bg-gray-50">
+              <p className="text-gray-700 leading-relaxed">
+                {faq.answer}
+              </p>
             </div>
-          ))}
+          )}
         </div>
+      ))}
+    </div>
 
-        <div className="mt-12 text-center">
-          <p className="text-gray-600 mb-4">
-            আরও প্রশ্ন আছে? আমাদের সাথে যোগাযোগ করুন
-          </p>
-        </div>
-      </div>
-    </section>
+    <div className="mt-12 text-center">
+      <p className="text-gray-600 mb-4">
+        আরও প্রশ্ন আছে? আমাদের সাথে যোগাযোগ করুন
+      </p>
+    </div>
+  </div>
+</section>
   );
 };
 

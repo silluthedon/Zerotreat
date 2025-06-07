@@ -23,7 +23,6 @@ const Testimonials = () => {
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch reviews from Supabase
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -31,9 +30,7 @@ const Testimonials = () => {
           .from("reviews")
           .select("id, name, review, rating, created_at")
           .order("created_at", { ascending: false });
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
         setReviews(data || []);
       } catch (error: any) {
         console.error("Error fetching reviews:", error.message);
@@ -46,7 +43,6 @@ const Testimonials = () => {
     fetchReviews();
   }, []);
 
-  // Handle form input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -54,27 +50,22 @@ const Testimonials = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle star rating click
   const handleStarClick = (rating: number) => {
     setFormData((prev) => ({ ...prev, rating }));
   };
 
-  // Handle star hover
   const handleStarHover = (rating: number) => {
     setHoveredRating(rating);
   };
 
-  // Handle mouse leave from stars
   const handleStarMouseLeave = () => {
     setHoveredRating(0);
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { name, review, rating } = formData;
 
-    // Validation
     if (!name.trim() || !review.trim()) {
       setFormError("নাম এবং রিভিউ পূরণ করুন।");
       return;
@@ -92,22 +83,18 @@ const Testimonials = () => {
       const { error } = await supabase
         .from("reviews")
         .insert([{ name: name.trim(), review: review.trim(), rating }]);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       setFormData({ name: "", review: "", rating: 0 });
       setFormError(null);
       toast.success("রিভিউ সফলভাবে জমা দেওয়া হয়েছে!", {
         position: "top-right",
         duration: 3000,
       });
-      // Refresh reviews
       const { data } = await supabase
         .from("reviews")
         .select("id, name, review, rating, created_at")
         .order("created_at", { ascending: false });
       setReviews(data || []);
-      // Scroll to the start to show the new review
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
       }
@@ -117,21 +104,18 @@ const Testimonials = () => {
     }
   };
 
-  // Scroll left
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -300, behavior: "smooth" });
     }
   };
 
-  // Scroll right
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
 
-  // Calculate average rating
   const averageRating =
     reviews.length > 0
       ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
@@ -148,7 +132,6 @@ const Testimonials = () => {
           <p className="text-lg text-gray-600">আমাদের সন্তুষ্ট গ্রাহকদের অভিজ্ঞতা শুনুন</p>
         </div>
 
-        {/* Reviews Display */}
         {loading ? (
           <p className="text-center text-gray-600">লোডিং...</p>
         ) : reviews.length === 0 ? (
@@ -158,17 +141,14 @@ const Testimonials = () => {
             <div
               ref={scrollContainerRef}
               className="flex overflow-x-auto space-x-4 scroll-smooth"
-              style={{
-                scrollbarWidth: "none", // Firefox
-                msOverflowStyle: "none", // IE and Edge
-              }}
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {reviews.map((review) => (
                 <div
                   key={review.id}
                   className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative min-w-[280px] max-w-[280px]"
                 >
-                  <div className="absolute top-4 right-4 text-green-500">
+                  <div className="absolute top-4 right-4 text-amber-500">
                     <Quote className="h-6 w-6 opacity-20" />
                   </div>
                   <div className="mb-4">
@@ -188,33 +168,24 @@ const Testimonials = () => {
                 </div>
               ))}
             </div>
-            {/* Hide Scrollbar for Webkit Browsers */}
-            <style>
-              {`
-                .flex::-webkit-scrollbar {
-                  display: none;
-                }
-              `}
-            </style>
-            {/* Navigation Arrows */}
+            <style>{`.flex::-webkit-scrollbar { display: none; }`}</style>
             <button
               onClick={scrollLeft}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full shadow-md hover:bg-green-700 transition-colors"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-amber-500 text-white p-2 rounded-full shadow-md hover:bg-amber-600 transition-colors"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={scrollRight}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-600 text-white p-2 rounded-full shadow-md hover:bg-green-700 transition-colors"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-amber-500 text-white p-2 rounded-full shadow-md hover:bg-amber-600 transition-colors"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
           </div>
         )}
 
-        {/* Average Rating */}
         <div className="mb-16 text-center">
-          <div className="inline-flex items-center space-x-2 bg-green-100 px-6 py-3 rounded-full">
+          <div className="inline-flex items-center space-x-2 bg-amber-100 px-6 py-3 rounded-full">
             <div className="flex space-x-1">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -232,9 +203,8 @@ const Testimonials = () => {
           </div>
         </div>
 
-        {/* Review Form */}
-        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto transform transition-all hover:scale-105 duration-300 border border-green-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center animate-pulse">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto border border-amber-100">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             আপনার রিভিউ দিন
           </h3>
           {formError && (
@@ -244,10 +214,7 @@ const Testimonials = () => {
           )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-semibold text-gray-800"
-              >
+              <label htmlFor="name" className="block text-sm font-semibold text-gray-800">
                 নাম
               </label>
               <input
@@ -256,16 +223,13 @@ const Testimonials = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="mt-2 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-50 transition-colors duration-200"
+                className="mt-2 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-gray-50 transition-colors duration-200"
                 placeholder="আপনার নাম লিখুন"
                 maxLength={50}
               />
             </div>
             <div>
-              <label
-                htmlFor="review"
-                className="block text-sm font-semibold text-gray-800"
-              >
+              <label htmlFor="review" className="block text-sm font-semibold text-gray-800">
                 রিভিউ
               </label>
               <textarea
@@ -273,7 +237,7 @@ const Testimonials = () => {
                 name="review"
                 value={formData.review}
                 onChange={handleInputChange}
-                className="mt-2 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-50 transition-colors duration-200"
+                className="mt-2 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-gray-50 transition-colors duration-200"
                 placeholder="আপনার অভিজ্ঞতা শেয়ার করুন"
                 rows={5}
                 maxLength={500}
@@ -283,10 +247,7 @@ const Testimonials = () => {
               <label className="block text-sm font-semibold text-gray-800 mb-2">
                 রেটিং
               </label>
-              <div
-                className="flex space-x-1"
-                onMouseLeave={handleStarMouseLeave}
-              >
+              <div className="flex space-x-1" onMouseLeave={handleStarMouseLeave}>
                 {[...Array(5)].map((_, i) => {
                   const starIndex = i + 1;
                   return (
@@ -307,7 +268,7 @@ const Testimonials = () => {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-3 rounded-full font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-md hover:shadow-lg !z-50"
               >
                 রিভিউ জমা দিন
               </button>
