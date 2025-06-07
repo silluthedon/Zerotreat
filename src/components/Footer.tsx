@@ -73,7 +73,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <p className="text-gray-400 text-sm">
-                © 2024 ZeroTreat. All rights reserved. |$|
+                © 2025 ZeroTreat. All rights reserved. |$|
               </p>
             </div>
           </div>

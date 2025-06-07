@@ -164,9 +164,9 @@ const Order: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+      <div className="min-h-screen bg-coffee-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-amber-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-coffee-500 mx-auto mb-4"></div>
           <p className="text-gray-600">লোড হচ্ছে...</p>
         </div>
       </div>
@@ -175,10 +175,10 @@ const Order: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-amber-50 flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen bg-coffee-50 flex items-center justify-center px-4 py-12">
         <div className="max-w-lg w-full bg-white rounded-2xl shadow-xl p-10 text-center transform transition-all duration-300 animate-pulse">
           <div className="mb-8">
-            <CheckCircle className="h-20 w-20 text-amber-500 mx-auto mb-4 animate-bounce" />
+            <CheckCircle className="h-20 w-20 text-coffee-500 mx-auto mb-4 animate-bounce" />
             <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
               অর্ডার সফল হয়েছে!
             </h2>
@@ -187,7 +187,7 @@ const Order: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-amber-50 rounded-xl p-6 mb-8">
+          <div className="bg-coffee-50 rounded-xl p-6 mb-8">
             <h3 className="font-semibold text-gray-900 text-xl mb-4">অর্ডার বিবরণ</h3>
             <p className="text-sm text-gray-600 mb-2">নাম: {formData.name}</p>
             <p className="text-sm text-gray-600 mb-2">ফোন: {formData.phone}</p>
@@ -199,12 +199,12 @@ const Order: React.FC = () => {
               </div>
             ))}
             <p className="text-sm text-gray-600 mb-2">ডেলিভারি চার্জ: ৳{deliveryCharge}</p>
-            <p className="text-base font-semibold text-amber-500 mt-4">মোট: ৳{totalPrice}</p>
+            <p className="text-base font-semibold text-coffee-500 mt-4">মোট: ৳{totalPrice}</p>
           </div>
 
           <Link
             to="/"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            className="inline-flex items-center space-x-2 bg-coffee-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-coffee-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             <ArrowLeft className="h-5 w-5" />
             <span>হোমে ফিরে যান</span>
@@ -215,17 +215,17 @@ const Order: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-gray-100">
+    <div className="min-h-screen bg-coffee-50">
       <div className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-3">
-              <Leaf className="h-10 w-10 text-amber-500 animate-pulse" />
-              <span className="text-3xl font-extrabold text-amber-500">ZeroTreat</span>
+              <Leaf className="h-10 w-10 text-coffee-500 animate-pulse" />
+              <span className="text-3xl font-extrabold text-coffee-500">ZeroTreat</span>
             </Link>
             <Link
               to="/"
-              className="flex items-center space-x-2 text-gray-600 hover:text-amber-500 transition-colors duration-200"
+              className="flex items-center space-x-2 text-gray-600 hover:text-coffee-500 transition-colors duration-200"
             >
               <ArrowLeft className="h-5 w-5" />
               <span className="font-medium">হোমে ফিরে যান</span>
@@ -263,7 +263,7 @@ const Order: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100 placeholder-gray-400"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors bg-coffee-50 placeholder-gray-400"
                   placeholder="আপনার পূর্ণ নাম লিখুন"
                 />
               </div>
@@ -278,7 +278,7 @@ const Order: React.FC = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100 placeholder-gray-400"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors bg-coffee-50 placeholder-gray-400"
                   placeholder="০১XXXXXXXXX"
                 />
               </div>
@@ -293,7 +293,7 @@ const Order: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100 placeholder-gray-400"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors bg-coffee-50 placeholder-gray-400"
                   placeholder="আপনার সম্পূর্ণ ঠিকানা লিখুন"
                 />
               </div>
@@ -309,7 +309,7 @@ const Order: React.FC = () => {
                       value={item.productId}
                       onChange={(e) => handleInputChange(e, index)}
                       required
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100"
+                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors bg-coffee-50"
                     >
                       <option value="">একটি পণ্য বেছে নিন</option>
                       {products
@@ -332,13 +332,13 @@ const Order: React.FC = () => {
                       onChange={(e) => handleInputChange(e, index)}
                       min="1"
                       max="10"
-                      className="w-24 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100"
+                      className="w-24 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors bg-coffee-50"
                     />
                     {formData.products.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeProduct(index)}
-                        className="text-amber-500 hover:text-amber-600 transition-colors"
+                        className="text-coffee-500 hover:text-coffee-600 transition-colors"
                       >
                         <X className="h-6 w-6" />
                       </button>
@@ -348,7 +348,7 @@ const Order: React.FC = () => {
                 <button
                   type="button"
                   onClick={addProduct}
-                  className="inline-flex items-center space-x-2 text-amber-500 hover:text-amber-600 font-semibold transition-colors mt-2"
+                  className="inline-flex items-center space-x-2 text-coffee-500 hover:text-coffee-600 font-semibold transition-colors mt-2"
                 >
                   <Plus className="h-5 w-5" />
                   <span>আরেকটি পণ্য যোগ করুন</span>
@@ -357,7 +357,7 @@ const Order: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg text-lg font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 !z-50 !block"
+                className="w-full bg-coffee-500 text-white py-4 rounded-lg text-lg font-semibold hover:bg-coffee-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 <span className="flex items-center justify-center space-x-2">
                   <ShoppingBag className="h-5 w-5" />
@@ -387,7 +387,7 @@ const Order: React.FC = () => {
                   <hr className="border-gray-200" />
                   <div className="flex justify-between items-center text-xl font-bold">
                     <span>মোট</span>
-                    <span className="text-amber-500">৳{totalPrice}</span>
+                    <span className="text-coffee-500">৳{totalPrice}</span>
                   </div>
                 </div>
               ) : (
@@ -395,14 +395,14 @@ const Order: React.FC = () => {
               )}
             </div>
 
-            <div className="bg-amber-50 rounded-2xl p-6 shadow-md">
+            <div className="bg-coffee-50 rounded-2xl p-6 shadow-md">
               <h4 className="font-semibold text-gray-900 text-xl mb-4">আরও পণ্যের সুপারিশ</h4>
               {getSuggestedProducts().length > 0 ? (
                 <div className="grid grid-cols-1 gap-4">
                   {getSuggestedProducts().map((product) => (
                     <div
                       key={product.id}
-                      className="flex items-center p-4 bg-white rounded-xl shadow-sm hover:bg-amber-100 transition-all duration-200"
+                      className="flex items-center p-4 bg-white rounded-xl shadow-sm hover:bg-coffee-100 transition-all duration-200"
                     >
                       <img
                         src={product.image || 'https://via.placeholder.com/80'}
@@ -415,10 +415,10 @@ const Order: React.FC = () => {
                       </div>
                       <button
                         onClick={() => addSuggestedProduct(product.id)}
-                        className="inline-flex items-center space-x-2 bg-amber-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-amber-600 transition-all duration-200 shadow-sm hover:shadow-md"
+                        className="inline-flex items-center space-x-2 bg-coffee-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-coffee-600 transition-all duration-200 shadow-sm hover:shadow-md"
                       >
                         <Plus className="h-4 w-4" />
-                        <span>যোগ করেন</span>
+                        <span>যোগ করুন</span>
                       </button>
                     </div>
                   ))}
@@ -428,29 +428,29 @@ const Order: React.FC = () => {
               )}
             </div>
 
-            <div className="bg-amber-50 rounded-2xl p-6 shadow-md">
+            <div className="bg-coffee-50 rounded-2xl p-6 shadow-md">
               <h4 className="font-semibold text-gray-900 text-xl mb-3">ডেলিভারি তথ্য</h4>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-center">
-                  <span className="h-2 w-2 bg-amber-500 rounded-full mr-2"></span>
+                  <span className="h-2 w-2 bg-coffee-500 rounded-full mr-2"></span>
                   ডেলিভারি: প্রতি {deliveryDays.join(', ')}
                 </li>
                 <li className="flex items-center">
-                  <span className="h-2 w-2 bg-amber-500 rounded-full mr-2"></span>
+                  <span className="h-2 w-2 bg-coffee-500 rounded-full mr-2"></span>
                   এলাকা: ঢাকার মধ্যে
                 </li>
                 <li className="flex items-center">
-                  <span className="h-2 w-2 bg-amber-500 rounded-full mr-2"></span>
+                  <span className="h-2 w-2 bg-coffee-500 rounded-full mr-2"></span>
                   ডেলিভারি চার্জ: ৳{deliveryCharge}
                 </li>
                 <li className="flex items-center">
-                  <span className="h-2 w-2 bg-amber-500 rounded-full mr-2"></span>
+                  <span className="h-2 w-2 bg-coffee-500 rounded-full mr-2"></span>
                   পেমেন্ট: ক্যাশ অন ডেলিভারি
                 </li>
               </ul>
             </div>
 
-            <div className="bg-amber-50 rounded-2xl p-6 shadow-md">
+            <div className="bg-coffee-50 rounded-2xl p-6 shadow-md">
               <h4 className="font-semibold text-gray-900 text-xl mb-3">যোগাযোগ</h4>
               <div className="space-y-2 text-sm text-gray-700">
                 <p>WhatsApp/Call: ০১XXXXXXXXX</p>
@@ -463,5 +463,4 @@ const Order: React.FC = () => {
     </div>
   );
 };
-
 export default Order;
