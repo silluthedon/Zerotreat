@@ -127,20 +127,20 @@ const AdminPrice: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-coffee-50">
       <Toaster />
       {/* Header */}
       <div className="bg-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Leaf className="h-8 w-8 text-green-600" />
-              <p className="text-2xl font-bold text-green-700">ZeroTreat</p>
+              <Leaf className="h-8 w-8 text-coffee-500" />
+              <p className="text-2xl font-bold text-coffee-500">ZeroTreat</p>
             </Link>
             <div className="flex items-center space-x-4">
               <Link
                 to="/admin"
-                className="text-gray-900 hover:text-green-600 transition-colors font-medium flex items-center space-x-1"
+                className="text-gray-900 hover:text-coffee-500 transition-colors font-medium flex items-center space-x-1"
               >
                 <ArrowLeft className="h-5 w-5" />
                 <span>Back to Admin</span>
@@ -148,7 +148,7 @@ const AdminPrice: React.FC = () => {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center space-x-2"
+                className="bg-coffee-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-coffee-700 transition-colors disabled:bg-coffee-400 flex items-center space-x-2"
               >
                 <LogOut className="h-5 w-5" />
                 <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
@@ -172,7 +172,7 @@ const AdminPrice: React.FC = () => {
 
         <div className="bg-white rounded-lg shadow-lg p-6">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-coffee-50">
               <tr>
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Product Name
@@ -210,7 +210,7 @@ const AdminPrice: React.FC = () => {
                         value={inputValue}
                         onChange={(e) => handlePriceChange(product.id, e.target.value)}
                         min="1"
-                        className={`w-24 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${
+                        className={`w-24 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${
                           isInvalid ? 'border-red-500' : ''
                         }`}
                         placeholder="Enter new price"
@@ -230,7 +230,7 @@ const AdminPrice: React.FC = () => {
           <div className="mt-6 flex justify-end">
             <button
               onClick={handleSavePrices}
-              className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-colors flex items-center space-x-2"
+              className="bg-coffee-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-coffee-600 transition-colors flex items-center space-x-2"
             >
               <Save className="h-5 w-5" />
               <span>Save Prices</span>

@@ -131,19 +131,19 @@ const Admin: React.FC = () => {
       case 'order_status':
         return {
           pending: 'bg-yellow-100 text-yellow-800',
-          confirmed: 'bg-green-100 text-green-800',
+          confirmed: 'bg-coffee-100 text-coffee-500',
           cancelled: 'bg-red-100 text-red-800',
         }[status] || 'bg-gray-100 text-gray-800';
       case 'delivery_status':
         return {
           not_shipped: 'bg-gray-100 text-gray-800',
           shipped: 'bg-blue-100 text-blue-800',
-          delivered: 'bg-green-100 text-green-800',
+          delivered: 'bg-coffee-100 text-coffee-500',
         }[status] || 'bg-gray-100 text-gray-800';
       case 'payment_status':
         return {
           unpaid: 'bg-orange-100 text-orange-800',
-          paid: 'bg-green-100 text-green-800',
+          paid: 'bg-coffee-100 text-coffee-500',
           failed: 'bg-red-100 text-red-800',
         }[status] || 'bg-gray-100 text-gray-800';
       default:
@@ -152,32 +152,32 @@ const Admin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-coffee-50">
       {/* Header */}
       <div className="bg-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Leaf className="h-8 w-8 text-green-600" />
-              <p className="text-2xl font-bold text-green-700">ZeroTreat</p>
+              <Leaf className="h-8 w-8 text-coffee-500" />
+              <p className="text-2xl font-bold text-coffee-500">ZeroTreat</p>
             </Link>
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleBackToHomeClick}
-                className="text-gray-900 hover:text-green-600 transition-colors font-medium flex items-center space-x-1"
+                className="text-gray-900 hover:text-coffee-500 transition-colors font-medium flex items-center space-x-1"
               >
                 <ArrowLeft className="h-5 w-5" />
                 <span>হোমে ফিরে যান</span>
               </button>
               <Link
                 to="/AdminPrice"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                className="bg-coffee-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-coffee-600 transition-colors flex items-center space-x-2"
               >
                 <span>আপডেট প্রাইস</span>
               </Link>
               <Link
                 to="/UpdateDeliveryDay"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                className="bg-coffee-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-coffee-600 transition-colors flex items-center space-x-2"
               >
                 <Calendar className="h-5 w-5" />
                 <span>আপডেট ডেলিভারি দিন</span>
@@ -185,7 +185,7 @@ const Admin: React.FC = () => {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center space-x-2"
+                className="bg-coffee-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-coffee-700 transition-colors disabled:bg-coffee-400 flex items-center space-x-2"
               >
                 <LogOut className="h-5 w-5" />
                 <span>{isLoggingOut ? 'লগআউট হচ্ছে...' : 'লগআউট'}</span>
@@ -213,7 +213,7 @@ const Admin: React.FC = () => {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center space-x-2"
+                className="px-4 py-2 bg-coffee-600 text-white rounded-lg hover:bg-coffee-700 transition-colors disabled:bg-coffee-400 flex items-center space-x-2"
               >
                 <LogOut className="h-5 w-5" />
                 <span>{isLoggingOut ? 'লগআউট হচ্ছে...' : 'লগআউট'}</span>
@@ -236,13 +236,13 @@ const Admin: React.FC = () => {
             placeholder="ফোন নম্বর দিয়ে অনুসন্ধান করুন"
             value={searchPhone}
             onChange={(e) => setSearchPhone(e.target.value)}
-            className="w-full sm:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full sm:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
           />
           <div className="flex items-center space-x-2">
             <select
               value={sortField}
               onChange={(e) => handleSort(e.target.value)}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
             >
               <option value="created_at">তারিখ</option>
               <option value="total_price">মোট মূল্য</option>
@@ -251,7 +251,7 @@ const Admin: React.FC = () => {
             </select>
             <button
               onClick={() => handleSort(sortField)}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
+              className="px-4 py-2 bg-coffee-500 text-white rounded-lg hover:bg-coffee-600 font-semibold"
             >
               {sortOrder === 'asc' ? 'ঊর্ধ্বক্রম' : 'নিম্নক্রম'}
             </button>
@@ -271,7 +271,7 @@ const Admin: React.FC = () => {
         ) : (
           <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="bg-coffee-50">
                 <tr>
                   <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
                     নাম
@@ -335,7 +335,7 @@ const Admin: React.FC = () => {
                         onChange={(e) =>
                           handleStatusUpdate(order.id, 'order_status', e.target.value)
                         }
-                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${getStatusClass(
+                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
                           order.order_status || 'pending',
                           'order_status'
                         )}`}
@@ -343,7 +343,7 @@ const Admin: React.FC = () => {
                         <option value="pending" className="bg-yellow-100 text-yellow-800">
                           পেন্ডিং
                         </option>
-                        <option value="confirmed" className="bg-green-100 text-green-800">
+                        <option value="confirmed" className="bg-coffee-100 text-coffee-500">
                           কনফার্মড
                         </option>
                         <option value="cancelled" className="bg-red-100 text-red-800">
@@ -357,7 +357,7 @@ const Admin: React.FC = () => {
                         onChange={(e) =>
                           handleStatusUpdate(order.id, 'delivery_status', e.target.value)
                         }
-                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${getStatusClass(
+                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
                           order.delivery_status || 'not_shipped',
                           'delivery_status'
                         )}`}
@@ -368,7 +368,7 @@ const Admin: React.FC = () => {
                         <option value="shipped" className="bg-blue-100 text-blue-800">
                           শিপড
                         </option>
-                        <option value="delivered" className="bg-green-100 text-green-800">
+                        <option value="delivered" className="bg-coffee-100 text-coffee-500">
                           ডেলিভারড
                         </option>
                       </select>
@@ -379,7 +379,7 @@ const Admin: React.FC = () => {
                         onChange={(e) =>
                           handleStatusUpdate(order.id, 'payment_status', e.target.value)
                         }
-                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 ${getStatusClass(
+                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
                           order.payment_status || 'unpaid',
                           'payment_status'
                         )}`}
@@ -387,7 +387,7 @@ const Admin: React.FC = () => {
                         <option value="unpaid" className="bg-orange-100 text-orange-800">
                           পেইড নয়
                         </option>
-                        <option value="paid" className="bg-green-100 text-green-800">
+                        <option value="paid" className="bg-coffee-100 text-coffee-500">
                           পেইড
                         </option>
                         <option value="failed" className="bg-red-100 text-red-800">

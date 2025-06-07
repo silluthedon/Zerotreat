@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar, Leaf, LogOut } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 
 const UpdateDeliveryDate: React.FC = () => {
@@ -9,6 +9,7 @@ const UpdateDeliveryDate: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const dayOptions = [
@@ -24,6 +25,12 @@ const UpdateDeliveryDate: React.FC = () => {
   useEffect(() => {
     const fetchDeliveryInfo = async () => {
       try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          navigate('/login');
+          return;
+        }
+
         const { data, error } = await supabase
           .from('delivery_info')
           .select('days, charge')
@@ -39,7 +46,7 @@ const UpdateDeliveryDate: React.FC = () => {
     };
 
     fetchDeliveryInfo();
-  }, []);
+  }, [navigate]);
 
   const handleDayChange = (day: string) => {
     setDeliveryDays((prev) =>
@@ -76,11 +83,24 @@ const UpdateDeliveryDate: React.FC = () => {
     }
   };
 
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      navigate('/login');
+    } catch (error: any) {
+      setError('লগআউট করতে ত্রুটি হয়েছে। আবার চেষ্টা করুন।');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+      <div className="min-h-screen bg-coffee-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-amber-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-coffee-500 mx-auto mb-4"></div>
           <p className="text-gray-600">লোড হচ্ছে...</p>
         </div>
       </div>
@@ -88,18 +108,32 @@ const UpdateDeliveryDate: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-gray-100">
-      <div className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-extrabold text-amber-500">ZeroTreat</h1>
-            <Link
-              to="/admin"
-              className="flex items-center space-x-2 text-gray-600 hover:text-amber-500 transition-colors duration-200"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span className="font-medium">অ্যাডমিন প্যানেলে ফিরে যান</span>
+    <div className="min-h-screen bg-coffee-50">
+      {/* Header */}
+      <div className="bg-white shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <Leaf className="h-8 w-8 text-coffee-500" />
+              <p className="text-2xl font-bold text-coffee-500">ZeroTreat</p>
             </Link>
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/admin"
+                className="text-gray-900 hover:text-coffee-500 transition-colors font-medium flex items-center space-x-1"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                <span>Back to Admin</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="bg-coffee-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-coffee-700 transition-colors disabled:bg-coffee-400 flex items-center space-x-2"
+              >
+                <LogOut className="h-5 w-5" />
+                <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -116,7 +150,7 @@ const UpdateDeliveryDate: React.FC = () => {
             </div>
           )}
           {success && (
-            <div className="mb-6 text-green-600 bg-green-100 p-4 rounded-xl shadow-md">
+            <div className="mb-6 text-coffee-500 bg-coffee-100 p-4 rounded-xl shadow-md">
               {success}
             </div>
           )}
@@ -133,7 +167,7 @@ const UpdateDeliveryDate: React.FC = () => {
                       type="checkbox"
                       checked={deliveryDays.includes(day)}
                       onChange={() => handleDayChange(day)}
-                      className="h-4 w-4 text-amber-500 focus:ring-amber-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-coffee-500 focus:ring-coffee-500 border-gray-300 rounded"
                     />
                     <span className="text-gray-700">{day}</span>
                   </label>
@@ -152,7 +186,7 @@ const UpdateDeliveryDate: React.FC = () => {
                   onChange={(e) => setDeliveryCharge(parseInt(e.target.value) || 0)}
                   min="0"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-gray-100"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors bg-coffee-50"
                   placeholder="ডেলিভারি চার্জ লিখুন"
                 />
               </div>
@@ -160,7 +194,7 @@ const UpdateDeliveryDate: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg text-lg font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="w-full bg-coffee-500 text-white py-4 rounded-lg text-lg font-semibold hover:bg-coffee-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               <span className="flex items-center justify-center space-x-2">
                 <Calendar className="h-5 w-5" />

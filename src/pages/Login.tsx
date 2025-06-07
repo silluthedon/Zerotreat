@@ -34,16 +34,16 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-coffee-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="flex items-center justify-between mb-8">
           <Link to="/" className="flex items-center space-x-2">
-            <Leaf className="h-8 w-8 text-green-500" />
-            <span className="text-2xl font-bold text-green-600">ZeroTreat</span>
+            <Leaf className="h-8 w-8 text-coffee-500" />
+            <span className="text-2xl font-bold text-coffee-500">ZeroTreat</span>
           </Link>
           <Link 
             to="/" 
-            className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
+            className="flex items-center space-x-2 text-gray-600 hover:text-coffee-500 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>হোমে ফিরে যান</span>
@@ -70,7 +70,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors"
               placeholder="আপনার ইমেইল লিখুন"
             />
           </div>
@@ -84,7 +84,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-colors"
               placeholder="আপনার পাসওয়ার্ড লিখুন"
             />
           </div>
@@ -92,7 +92,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-500 text-white py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors disabled:bg-green-300"
+            className="w-full bg-coffee-500 text-white py-4 rounded-lg text-lg font-semibold hover:bg-coffee-600 transition-colors disabled:bg-coffee-300"
           >
             {loading ? 'লগইন হচ্ছে...' : 'লগইন করুন'}
           </button>
