@@ -18,7 +18,6 @@ const Home = () => {
       <Features />
       <TargetAudience />
       <Products />
-      <OrderDelivery />
       <WhyZeroTreat />
       <Testimonials />
       <FAQ />
