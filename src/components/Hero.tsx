@@ -1,49 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 
 const Hero = () => {
-  // Array of background images (replace with your actual image URLs)
+  // Array of background images
   const images = [
     'https://img.freepik.com/free-photo/chocolate-cake-with-cream-nuts-chocolate-spread_140725-10904.jpg?semt=ais_hybrid&w=740', // Cake
     'https://img.freepik.com/free-photo/ai-generated-cake-picture_23-2150649466.jpg?semt=ais_items_boosted&w=740', // Pastry
     'https://img.freepik.com/premium-photo/variation-different-unhealthy-snacks-crackers-sweet-salted-popcorn-tortillas-nuts-straws-bretsels_136595-3545.jpg?semt=ais_hybrid&w=740', // Snacks
   ];
 
-  // Preload images to prevent flickering
+  // State to track current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Preload images and cycle through images every 4 seconds
   useEffect(() => {
+    // Preload images to prevent flickering
     images.forEach((image) => {
       const img = new Image();
       img.src = image;
     });
+
+    // Set interval to change image every 4 seconds
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 4000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(interval);
   }, [images]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-coffee-50 to-white pt-16 overflow-hidden">
-      {/* Background Slideshow */}
+      {/* Background Slideshow with Fade Effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="flex h-full animate-slide"
-          style={{
-            width: `${images.length * 100}%`,
-          }}
-        >
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className="h-full flex-1 bg-cover bg-center" // Kept original colors
-              style={{
-                backgroundImage: `url(${image})`,
-                width: `${100 / images.length}%`,
-              }}
-            />
-          ))}
-        </div>
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{
+              backgroundImage: `url(${image})`,
+            }}
+          />
+        ))}
       </div>
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-        <div className="max-w-4xl mx-auto bg-white bg-opacity-90 rounded-xl p-8 shadow-lg"> {/* Increased opacity to 90% for better text clarity */}
+        <div className="max-w-4xl mx-auto bg-white bg-opacity-90 rounded-xl p-8 shadow-lg">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight drop-shadow-md">
             নিশ্চিন্তে উপভোগ করুন প্রিয় <span className="text-coffee-500">কেক, স্ন্যাকস, পেস্ট্রি</span>
           </h1>
@@ -77,23 +83,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* CSS for sliding animation */}
-      <style>
-        {`
-          @keyframes slide {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-${100 / images.length * (images.length - 1)}%);
-            }
-          }
-          .animate-slide {
-            animation: slide ${images.length * 15}s linear infinite; /* Kept duration at 15s per image */
-          }
-        `}
-      </style>
     </section>
   );
 };
