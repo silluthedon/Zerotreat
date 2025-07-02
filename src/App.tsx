@@ -7,11 +7,13 @@ import Login from './pages/Login';
 import Admin from './pages/Admin';
 import AdminPrice from './pages/AdminPrice';
 import UpdateDeliveryDay from './pages/UpdateDeliveryDay';
+import AddProduct from './pages/AddProduct';
+import UpdateProductStatus from './pages/UpdateProductStatus';
 
 // Component to conditionally render Header
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout = ({ children }) => {
   const location = useLocation();
-  const isAdminRoute = location.pathname === '/admin' || location.pathname === '/AdminPrice' || location.pathname === '/UpdateDeliveryDay';
+  const isAdminRoute = ['/admin', '/AdminPrice', '/UpdateDeliveryDay', '/AddProduct', '/UpdateProductStatus'].includes(location.pathname);
 
   return (
     <>
@@ -21,7 +23,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -52,6 +54,8 @@ const App: React.FC = () => {
         <Route path="/admin" element={<Admin />} />
         <Route path="/AdminPrice" element={<AdminPrice />} />
         <Route path="/UpdateDeliveryDay" element={<UpdateDeliveryDay />} />
+        <Route path="/AddProduct" element={<AddProduct />} />
+        <Route path="/UpdateProductStatus" element={<UpdateProductStatus />} />
       </Routes>
     </Router>
   );

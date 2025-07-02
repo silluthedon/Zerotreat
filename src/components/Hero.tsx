@@ -31,7 +31,7 @@ const Hero = () => {
           {images.map((image, index) => (
             <div
               key={index}
-              className="h-full flex-1 bg-cover bg-center opacity-40" // Increased opacity to 40%
+              className="h-full flex-1 bg-cover bg-center opacity-30" // Reduced opacity to 30% for better text clarity
               style={{
                 backgroundImage: `url(${image})`,
                 width: `${100 / images.length}%`,
@@ -41,7 +41,7 @@ const Hero = () => {
         </div>
         {/* Subtle pattern overlay with reduced opacity */}
         <div
-          className="absolute inset-0 opacity-10 z-10" // Reduced opacity to 10%
+          className="absolute inset-0 bg-coffee-900 opacity-10 z-10" // Added a semi-transparent dark overlay
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238B6F47' fill-opacity='0.1'%3E%3Cpath d='m0 40l40-40h-40z'/%3E%3C/g%3E%3C/svg%3E")`,
           }}
@@ -50,15 +50,15 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+        <div className="max-w-4xl mx-auto bg-white bg-opacity-70 rounded-xl p-8 shadow-lg"> {/* Added semi-transparent white background */}
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight drop-shadow-md">
             নিশ্চিন্তে উপভোগ করুন প্রিয় <span className="text-coffee-500">কেক, স্ন্যাক্স পেস্ট্রি</span>
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-coffee-500 mb-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-coffee-500 mb-8 drop-shadow-md">
             হেলদি, কিন্তু দারুণ টেস্টি
           </h2>
           
-          <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-3xl mx-auto drop-shadow-md">
             ডায়াবেটিস, ওজন বৃদ্ধি কিংবা হৃদরোগের ভয়ে আর নয় প্রিয় খাবার থেকে দূরে থাকা। 
             এবার থেকে খাওয়ার আনন্দ হবে এখন একদম <span className="font-semibold text-coffee-500">guilt-free!</span>
           </p>
@@ -97,7 +97,7 @@ const Hero = () => {
             }
           }
           .animate-slide {
-            animation: slide ${images.length * 10}s linear infinite;
+            animation: slide ${images.length * 15}s linear infinite; /* Increased duration to 15s per image */
           }
         `}
       </style>

@@ -8,6 +8,7 @@ interface Product {
   name: string;
   price: number;
   image?: string;
+  status?: string;
 }
 
 interface OrderItem {
@@ -41,14 +42,18 @@ const Order: React.FC = () => {
     const fetchData = async () => {
       try {
         const [productsResponse, deliveryResponse] = await Promise.all([
-          supabase.from('products').select('id, name, price, image'),
+          supabase.from('products').select('id, name, price, image, status'),
           supabase.from('delivery_info').select('days, charge').single(),
         ]);
 
         if (productsResponse.error) throw productsResponse.error;
         if (deliveryResponse.error) throw deliveryResponse.error;
 
-        setProducts(productsResponse.data || []);
+        // Filter only available products
+        const availableProducts = productsResponse.data.filter(
+          (product) => product.status === 'available' || !product.status
+        );
+        setProducts(availableProducts || []);
         setDeliveryDays(deliveryResponse.data?.days || ['রবিবার']);
         setDeliveryCharge(deliveryResponse.data?.charge || 50);
       } catch (error: any) {
@@ -463,4 +468,5 @@ const Order: React.FC = () => {
     </div>
   );
 };
+
 export default Order;

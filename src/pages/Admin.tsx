@@ -1,32 +1,18 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Leaf, LogOut, Calendar } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 
-interface Order {
-  id: string;
-  name: string;
-  phone: string;
-  address: string;
-  product_name: string;
-  quantity: number;
-  total_price: number;
-  created_at: string;
-  order_status: string;
-  delivery_status: string;
-  payment_status: string;
-}
-
-const Admin: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-  const [searchPhone, setSearchPhone] = useState<string>('');
-  const [sortField, setSortField] = useState<string>('created_at');
-  const [sortOrder, setSortOrder] = useState<string>('desc');
-  const [showLogoutPopup, setShowLogoutPopup] = useState<boolean>(false);
+const Admin = () => {
+  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [searchPhone, setSearchPhone] = useState('');
+  const [sortField, setSortField] = useState('created_at');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +33,7 @@ const Admin: React.FC = () => {
         }
         setOrders(data || []);
         setFilteredOrders(data || []);
-      } catch (error: any) {
+      } catch (error) {
         setError('অর্ডার লোড করতে ত্রুটি হয়েছে।');
         console.error(error.message);
       } finally {
@@ -77,7 +63,7 @@ const Admin: React.FC = () => {
         throw error;
       }
       navigate('/');
-    } catch (error: any) {
+    } catch (error) {
       setError('লগআউট করতে ত্রুটি হয়েছে। আবার চেষ্টা করুন।');
     } finally {
       setIsLoggingOut(false);
@@ -93,7 +79,7 @@ const Admin: React.FC = () => {
     setShowLogoutPopup(false);
   };
 
-  const handleSort = (field: string) => {
+  const handleSort = (field) => {
     if (sortField === field) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
@@ -102,7 +88,7 @@ const Admin: React.FC = () => {
     }
   };
 
-  const handleStatusUpdate = async (orderId: string, field: string, value: string) => {
+  const handleStatusUpdate = async (orderId, field, value) => {
     try {
       const { error } = await supabase
         .from('orders')
@@ -121,12 +107,12 @@ const Admin: React.FC = () => {
           order.id === orderId ? { ...order, [field]: value } : order
         )
       );
-    } catch (error: any) {
+    } catch (error) {
       setError(`স্ট্যাটাস আপডেট করতে ত্রুটি: ${error.message}`);
     }
   };
 
-  const getStatusClass = (status: string, type: string) => {
+  const getStatusClass = (status, type) => {
     switch (type) {
       case 'order_status':
         return {
@@ -153,7 +139,6 @@ const Admin: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-coffee-50">
-      {/* Header */}
       <div className="bg-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
@@ -182,6 +167,18 @@ const Admin: React.FC = () => {
                 <Calendar className="h-5 w-5" />
                 <span>আপডেট ডেলিভারি দিন</span>
               </Link>
+              <Link
+                to="/AddProduct"
+                className="bg-coffee-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-coffee-600 transition-colors flex items-center space-x-2"
+              >
+                <span>নতুন পণ্য যোগ</span>
+              </Link>
+              <Link
+                to="/UpdateProductStatus"
+                className="bg-coffee-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-coffee-600 transition-colors flex items-center space-x-2"
+              >
+                <span>পণ্যের স্ট্যাটাস আপডেট</span>
+              </Link>
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
@@ -195,7 +192,6 @@ const Admin: React.FC = () => {
         </div>
       </div>
 
-      {/* Logout Confirmation Popup */}
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full">
@@ -223,13 +219,11 @@ const Admin: React.FC = () => {
         </div>
       )}
 
-      {/* Orders List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
           অর্ডার তালিকা
         </h1>
 
-        {/* Search and Sort Controls */}
         <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <input
             type="text"
@@ -259,9 +253,7 @@ const Admin: React.FC = () => {
         </div>
 
         {error && (
-          <div className="mb-6 text-red-600 text-center">
-            {error}
-          </div>
+          <div className="mb-6 text-red-600 text-center">{error}</div>
         )}
 
         {loading ? (

@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 const Features = () => {
   const features = [
     {
       title: "জিরো সুগার",
       description: "কোনো চিনি নেই, শুধু প্রাকৃতিক মিষ্টতা",
-      image: 'https://img.freepik.com/free-photo/world-diabetes-day-sugar-cubes-glass-bowl-dark-floor_1150-26665.jpg?semt=ais_items_boosted&w=740', // Cake (placeholder)
+      image: 'https://img.freepik.com/free-photo/world-diabetes-day-sugar-cubes-glass-bowl-dark-floor_1150-26665.jpg?semt=ais_items_boosted&w=740',
     },
     {
       title: "জিরো ট্রান্স ফ্যাট",
       description: "হৃদয়ের জন্য সম্পূর্ণ নিরাপদ এবং স্বাস্থ্যকর",
-      image: 'https://www.shutterstock.com/image-photo/word-trans-fat-made-french-260nw-2245044435.jpg', // Pastry (placeholder)
+      image: 'https://www.shutterstock.com/image-photo/word-trans-fat-made-french-260nw-2245044435.jpg',
     },
     {
       title: "জিরো প্রিজার্ভেটিভ",
       description: "কোনো রাসায়নিক নেই, শুধু প্রাকৃতিক উপাদান",
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ9zbWpwD0NlsysfRPdWLQXN3od9nYhHoHdg&s', // Snacks (placeholder)
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ9zbWpwD0NlsysfRPdWLQXN3od9nYhHoHdg&s',
     },
     {
       title: "লো কার্ব, হাই প্রোটিন",
       description: "ডায়াবেটিক-ফ্রেন্ডলি এবং ফিটনেসের জন্য উপযুক্ত",
-      image: 'https://img.freepik.com/free-photo/flexitarian-diet-food-composition_23-2148955511.jpg?semt=ais_hybrid&w=740', // Fitness food (placeholder)
+      image: 'https://img.freepik.com/free-photo/flexitarian-diet-food-composition_23-2148955511.jpg?semt=ais_hybrid&w=740',
     },
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
             আমাদের বিশেষত্ব
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            ZeroTreat এর প্রতিটি পণ্য তৈরি হয়েছে আপনার স্বাস্থ্য এবং স্বাদ দুটোকেই মাথায় রেখে
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            ZeroTreat এর প্রতিটি পণ্য তৈরি হয়েছে আপনার স্বাস্থ্য এবং স্বাদ দুটোকেই মাথায় রেখে 
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => {
             const [isLoaded, setIsLoaded] = useState(false);
 
@@ -48,43 +47,41 @@ const Features = () => {
             }, [feature.image]);
 
             return (
-              <div 
-                key={index} 
-                className="text-center p-6 rounded-xl bg-gray-50 hover:bg-coffee-100 transition-all duration-300 hover:shadow-lg group"
+              <div
+                key={index}
+                className="relative group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 p-6"
               >
-                <div className="relative inline-flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-md mb-4 group-hover:shadow-lg transition-all duration-300">
-                  {isLoaded && (
+                <div className="relative mb-6 overflow-hidden rounded-xl">
+                  {isLoaded ? (
                     <img
                       src={feature.image}
                       alt={feature.title}
-                      className="absolute w-16 h-16 object-cover rounded-full opacity-0 animate-fadeIn"
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
+                  ) : (
+                    <div className="w-full h-48 bg-gray-200 animate-pulse rounded-xl" />
                   )}
-                  <div className="absolute w-16 h-16 flex items-center justify-center">
-                    <span className="text-red-500 text-3xl font-bold">✗</span>
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 group-hover:bg-opacity-20 transition-opacity duration-300">
+                    <span className="text-white text-4xl font-bold drop-shadow-lg">✗</span>
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
+
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                <p className="text-gray-600 text-lg leading-relaxed">{feature.description}</p>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* CSS for fade-in animation */}
       <style>
         {`
           @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 50%; }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
           }
           .animate-fadeIn {
-            animation: fadeIn 0.5s ease-in-out forwards;
+            animation: fadeIn 0.6s ease-out forwards;
           }
         `}
       </style>
