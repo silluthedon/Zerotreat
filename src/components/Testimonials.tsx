@@ -270,7 +270,7 @@ const Testimonials = () => {
                 type="submit"
                 className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-md hover:shadow-lg !z-50"
               >
-                রিভিউ জমা দিন
+                সেভ করুন
               </button>
             </div>
           </form>
