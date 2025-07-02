@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import zeroSugar from '../assets/images/zero-sugar.jpg';
+import zeroTransFat from '../assets/images/zero-trans-fat.jpg';
+import zeroPreservatives from '../assets/images/zero-preservatives.jpg';
+import lowCarbHighProtein from '../assets/images/low-carb-high-protein.jpg';
 
 const Features = () => {
   const features = [
     {
       title: "জিরো সুগার",
       description: "কোনো চিনি নেই, শুধু প্রাকৃতিক মিষ্টতা",
-      image: 'https://img.freepik.com/free-photo/world-diabetes-day-sugar-cubes-glass-bowl-dark-floor_1150-26665.jpg?semt=ais_items_boosted&w=740',
+      image: zeroSugar,
     },
     {
       title: "জিরো ট্রান্স ফ্যাট",
       description: "হৃদয়ের জন্য সম্পূর্ণ নিরাপদ এবং স্বাস্থ্যকর",
-      image: 'https://www.shutterstock.com/image-photo/word-trans-fat-made-french-260nw-2245044435.jpg',
+      image: zeroTransFat,
     },
     {
       title: "জিরো প্রিজার্ভেটিভ",
       description: "কোনো রাসায়নিক নেই, শুধু প্রাকৃতিক উপাদান",
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ9zbWpwD0NlsysfRPdWLQXN3od9nYhHoHdg&s',
+      image: zeroPreservatives,
     },
     {
       title: "লো কার্ব, হাই প্রোটিন",
       description: "ডায়াবেটিক-ফ্রেন্ডলি এবং ফিটনেসের জন্য উপযুক্ত",
-      image: 'https://img.freepik.com/free-photo/flexitarian-diet-food-composition_23-2148955511.jpg?semt=ais_hybrid&w=740',
+      image: lowCarbHighProtein,
     },
   ];
 

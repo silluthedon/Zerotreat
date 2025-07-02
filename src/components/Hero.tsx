@@ -31,7 +31,7 @@ const Hero = () => {
           {images.map((image, index) => (
             <div
               key={index}
-              className="h-full flex-1 bg-cover bg-center opacity-30" // Reduced opacity to 30% for better text clarity
+              className="h-full flex-1 bg-cover bg-center" // Removed opacity to keep original colors
               style={{
                 backgroundImage: `url(${image})`,
                 width: `${100 / images.length}%`,
@@ -39,18 +39,11 @@ const Hero = () => {
             />
           ))}
         </div>
-        {/* Subtle pattern overlay with reduced opacity */}
-        <div
-          className="absolute inset-0 bg-coffee-900 opacity-10 z-10" // Added a semi-transparent dark overlay
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238B6F47' fill-opacity='0.1'%3E%3Cpath d='m0 40l40-40h-40z'/%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
       </div>
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-        <div className="max-w-4xl mx-auto bg-white bg-opacity-70 rounded-xl p-8 shadow-lg"> {/* Added semi-transparent white background */}
+        <div className="max-w-4xl mx-auto bg-white bg-opacity-70 rounded-xl p-8 shadow-lg"> {/* Kept semi-transparent white background for text clarity */}
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight drop-shadow-md">
             নিশ্চিন্তে উপভোগ করুন প্রিয় <span className="text-coffee-500">কেক, স্ন্যাক্স পেস্ট্রি</span>
           </h1>
@@ -97,7 +90,7 @@ const Hero = () => {
             }
           }
           .animate-slide {
-            animation: slide ${images.length * 15}s linear infinite; /* Increased duration to 15s per image */
+            animation: slide ${images.length * 15}s linear infinite; /* Kept duration at 15s per image */
           }
         `}
       </style>
