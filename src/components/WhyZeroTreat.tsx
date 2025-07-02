@@ -32,9 +32,6 @@ const WhyZeroTreat = () => {
       <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
         কেন ZeroTreat বেছে নেবেন?
       </h2>
-      <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-        আমাদের অনন্য পদ্ধতি এবং গুণমান নিশ্চিত করে যে আপনি পাচ্ছেন সর্বোত্তম স্বাস্থ্যকর স্ন্যাক্স
-      </p>
     </div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

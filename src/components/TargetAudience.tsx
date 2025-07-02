@@ -30,9 +30,6 @@ const TargetAudience = () => {
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
             কাদের জন্য ZeroTreat?
           </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-            আমাদের স্বাস্থ্যকর স্ন্যাক্স বিশেষভাবে তৈরি বিভিন্ন ধরনের স্বাস্থ্য সচেতন মানুষের জন্য
-          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
