@@ -45,10 +45,10 @@ const Hero = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
         <div className="max-w-4xl mx-auto bg-white bg-opacity-90 rounded-xl p-8 shadow-lg"> {/* Increased opacity to 90% for better text clarity */}
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight drop-shadow-md">
-            নিশ্চিন্তে উপভোগ করুন প্রিয় <span className="text-coffee-500">কেক, স্ন্যাক্স পেস্ট্রি</span>
+            নিশ্চিন্তে উপভোগ করুন প্রিয় <span className="text-coffee-500">কেক, স্ন্যাকস, পেস্ট্রি</span>
           </h1>
           <h2 className="text-2xl md:text-3xl font-semibold text-coffee-500 mb-8 drop-shadow-md">
-            হেলদি, কিন্তু দারুণ টেস্টি
+            হেলদি, কিন্তু দারুণ টেস্টি!
           </h2>
           
           <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-3xl mx-auto drop-shadow-md">
