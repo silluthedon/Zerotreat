@@ -21,7 +21,7 @@ const WhyZeroTreat = () => {
     {
       icon: <Heart className="h-8 w-8 text-green-500" />,
       title: "স্বাস্থ্য ও আনন্দ",
-      description: "খেলে শরীর ভালো থাকে, মন খুশি হয়"
+      description: "খেতে সুস্বাদু, শরীরও থাকে ভালো"
     }
   ];
 

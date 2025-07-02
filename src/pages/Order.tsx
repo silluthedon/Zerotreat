@@ -221,7 +221,7 @@ const Order: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-coffee-50">
-      <div className="bg-white shadow-md">
+      <div className="bg-coffee-50"> {/* Changed from bg-white shadow-md to bg-coffee-50 */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-3">
@@ -374,7 +374,7 @@ const Order: React.FC = () => {
 
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-xl p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">অর্ডার সারসংক্ষেপ</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">অর্ডার সামারি</h3>
               {selectedProducts.length > 0 ? (
                 <div className="space-y-4">
                   {selectedProducts.map((product, index) => (
@@ -401,7 +401,7 @@ const Order: React.FC = () => {
             </div>
 
             <div className="bg-coffee-50 rounded-2xl p-6 shadow-md">
-              <h4 className="font-semibold text-gray-900 text-xl mb-4">আরও পণ্যের সুপারিশ</h4>
+              <h4 className="font-semibold text-gray-900 text-xl mb-4">আরো অর্ডার করতে পারেন</h4>
               {getSuggestedProducts().length > 0 ? (
                 <div className="grid grid-cols-1 gap-4">
                   {getSuggestedProducts().map((product) => (
@@ -434,7 +434,7 @@ const Order: React.FC = () => {
             </div>
 
             <div className="bg-coffee-50 rounded-2xl p-6 shadow-md">
-              <h4 className="font-semibold text-gray-900 text-xl mb-3">ডেলিভারি তথ্য</h4>
+              <h4 className="font-semibold text-gray-900 text-xl mb-3">ডেলিভারির তথ্য</h4>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-center">
                   <span className="h-2 w-2 bg-coffee-500 rounded-full mr-2"></span>
