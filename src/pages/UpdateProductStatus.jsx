@@ -221,7 +221,7 @@ const UpdateProductStatus = () => {
                           ? 'আউট অফ স্টক'
                           : product.status === 'buy_one_get_one'
                           ? 'বাই ওয়ান গেট ওয়ান'
-                          : 'উপলব্ধ'}
+                          : 'একটিভ'}
                       </span>
                     </td>
                     <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
@@ -352,7 +352,7 @@ const UpdateProductStatus = () => {
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 bg-coffee-50"
                   >
-                    <option value="available">উপলব্ধ</option>
+                    <option value="available">একটিভ</option>
                     <option value="out_of_stock">আউট অফ স্টক</option>
                     <option value="buy_one_get_one">বাই ওয়ান গেট ওয়ান</option>
                   </select>
