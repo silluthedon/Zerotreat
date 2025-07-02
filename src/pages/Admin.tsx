@@ -13,6 +13,9 @@ const Admin = () => {
   const [sortField, setSortField] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalOrders, setTotalOrders] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,13 +27,31 @@ const Admin = () => {
           return;
         }
 
+        // Fetch total count of orders
+        const { count, error: countError } = await supabase
+          .from('orders')
+          .select('id', { count: 'exact', head: true });
+
+        if (countError) {
+          throw countError;
+        }
+
+        setTotalOrders(count || 0);
+
+        // Fetch orders for the current page
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage - 1;
+
         const { data, error } = await supabase
           .from('orders')
           .select('id, name, phone, address, product_name, quantity, total_price, created_at, order_status, delivery_status, payment_status')
-          .order(sortField, { ascending: sortOrder === 'asc' });
+          .order(sortField, { ascending: sortOrder === 'asc' })
+          .range(start, end);
+
         if (error) {
           throw error;
         }
+
         setOrders(data || []);
         setFilteredOrders(data || []);
       } catch (error) {
@@ -42,7 +63,7 @@ const Admin = () => {
     };
 
     fetchOrders();
-  }, [navigate, sortField, sortOrder]);
+  }, [navigate, sortField, sortOrder, currentPage, itemsPerPage]);
 
   useEffect(() => {
     if (searchPhone.trim() === '') {
@@ -86,6 +107,7 @@ const Admin = () => {
       setSortField(field);
       setSortOrder('asc');
     }
+    setCurrentPage(1); // Reset to first page on sort
   };
 
   const handleStatusUpdate = async (orderId, field, value) => {
@@ -112,6 +134,15 @@ const Admin = () => {
     }
   };
 
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page when items per page changes
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   const getStatusClass = (status, type) => {
     switch (type) {
       case 'order_status':
@@ -135,6 +166,26 @@ const Admin = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalOrders / itemsPerPage);
+
+  // Generate page numbers for display
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
   };
 
   return (
@@ -249,6 +300,16 @@ const Admin = () => {
             >
               {sortOrder === 'asc' ? 'ঊর্ধ্বক্রম' : 'নিম্নক্রম'}
             </button>
+            <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
+            >
+              <option value="5">৫ টি অর্ডার</option>
+              <option value="10">১০ টি অর্ডার</option>
+              <option value="20">২০ টি অর্ডার</option>
+              <option value="50">৫০ টি অর্ডার</option>
+            </select>
           </div>
         </div>
 
@@ -261,137 +322,175 @@ const Admin = () => {
         ) : filteredOrders.length === 0 ? (
           <p className="text-center text-gray-600">কোনো অর্ডার পাওয়া যায়নি।</p>
         ) : (
-          <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-coffee-50">
-                <tr>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    নাম
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    ফোন
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    ঠিকানা
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    পণ্য
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    পরিমাণ
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    মোট
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    তারিখ
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    অর্ডার স্ট্যাটাস
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    ডেলিভারি স্ট্যাটাস
-                  </th>
-                  <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
-                    পেমেন্ট স্ট্যাটাস
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {order.name}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {order.phone}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 text-sm text-gray-900">
-                      {order.address}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {order.product_name}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {order.quantity}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      ৳{order.total_price}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {new Date(order.created_at).toLocaleDateString('bn-BD')}
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
-                      <select
-                        value={order.order_status || 'pending'}
-                        onChange={(e) =>
-                          handleStatusUpdate(order.id, 'order_status', e.target.value)
-                        }
-                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
-                          order.order_status || 'pending',
-                          'order_status'
-                        )}`}
-                      >
-                        <option value="pending" className="bg-yellow-100 text-yellow-800">
-                          পেন্ডিং
-                        </option>
-                        <option value="confirmed" className="bg-coffee-100 text-coffee-500">
-                          কনফার্মড
-                        </option>
-                        <option value="cancelled" className="bg-red-100 text-red-800">
-                          বাতিল
-                        </option>
-                      </select>
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
-                      <select
-                        value={order.delivery_status || 'not_shipped'}
-                        onChange={(e) =>
-                          handleStatusUpdate(order.id, 'delivery_status', e.target.value)
-                        }
-                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
-                          order.delivery_status || 'not_shipped',
-                          'delivery_status'
-                        )}`}
-                      >
-                        <option value="not_shipped" className="bg-gray-100 text-gray-800">
-                          শিপড নয়
-                        </option>
-                        <option value="shipped" className="bg-blue-100 text-blue-800">
-                          শিপড
-                        </option>
-                        <option value="delivered" className="bg-coffee-100 text-coffee-500">
-                          ডেলিভারড
-                        </option>
-                      </select>
-                    </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
-                      <select
-                        value={order.payment_status || 'unpaid'}
-                        onChange={(e) =>
-                          handleStatusUpdate(order.id, 'payment_status', e.target.value)
-                        }
-                        className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
-                          order.payment_status || 'unpaid',
-                          'payment_status'
-                        )}`}
-                      >
-                        <option value="unpaid" className="bg-orange-100 text-orange-800">
-                          পেইড নয়
-                        </option>
-                        <option value="paid" className="bg-coffee-100 text-coffee-500">
-                          পেইড
-                        </option>
-                        <option value="failed" className="bg-red-100 text-red-800">
-                          ব্যর্থ
-                        </option>
-                      </select>
-                    </td>
+          <>
+            <div className="bg-white rounded-lg shadow-lg overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-coffee-50">
+                  <tr>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      নাম
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      ফোন
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      ঠিকানা
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      পণ্য
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      পরিমাণ
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      মোট
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      তারিখ
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      অর্ডার স্ট্যাটাস
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      ডেলিভারি স্ট্যাটাস
+                    </th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                      পেমেন্ট স্ট্যাটাস
+                    </th>
                   </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredOrders.map((order) => (
+                    <tr key={order.id}>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {order.name}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {order.phone}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 text-sm text-gray-900">
+                        {order.address}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {order.product_name}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {order.quantity}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ৳{order.total_price}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {new Date(order.created_at).toLocaleDateString('bn-BD')}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                        <select
+                          value={order.order_status || 'pending'}
+                          onChange={(e) =>
+                            handleStatusUpdate(order.id, 'order_status', e.target.value)
+                          }
+                          className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
+                            order.order_status || 'pending',
+                            'order_status'
+                          )}`}
+                        >
+                          <option value="pending" className="bg-yellow-100 text-yellow-800">
+                            পেন্ডিং
+                          </option>
+                          <option value="confirmed" className="bg-coffee-100 text-coffee-500">
+                            কনফার্মড
+                          </option>
+                          <option value="cancelled" className="bg-red-100 text-red-800">
+                            বাতিল
+                          </option>
+                        </select>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                        <select
+                          value={order.delivery_status || 'not_shipped'}
+                          onChange={(e) =>
+                            handleStatusUpdate(order.id, 'delivery_status', e.target.value)
+                          }
+                          className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
+                            order.delivery_status || 'not_shipped',
+                            'delivery_status'
+                          )}`}
+                        >
+                          <option value="not_shipped" className="bg-gray-100 text-gray-800">
+                            শিপড নয়
+                          </option>
+                          <option value="shipped" className="bg-blue-100 text-blue-800">
+                            শিপড
+                          </option>
+                          <option value="delivered" className="bg-coffee-100 text-coffee-500">
+                            ডেলিভারড
+                          </option>
+                        </select>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                        <select
+                          value={order.payment_status || 'unpaid'}
+                          onChange={(e) =>
+                            handleStatusUpdate(order.id, 'payment_status', e.target.value)
+                          }
+                          className={`px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 ${getStatusClass(
+                            order.payment_status || 'unpaid',
+                            'payment_status'
+                          )}`}
+                        >
+                          <option value="unpaid" className="bg-orange-100 text-orange-800">
+                            পেইড নয়
+                          </option>
+                          <option value="paid" className="bg-coffee-100 text-coffee-500">
+                            পেইড
+                          </option>
+                          <option value="failed" className="bg-red-100 text-red-800">
+                            ব্যর্থ
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="text-gray-600">
+                মোট অর্ডার: {totalOrders} | পেজ {currentPage} এর মধ্যে {totalPages}
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-coffee-500 text-white rounded-lg hover:bg-coffee-600 disabled:bg-gray-300"
+                >
+                  আগের পেজ
+                </button>
+                {getPageNumbers().map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`px-4 py-2 rounded-lg ${
+                      currentPage === page
+                        ? 'bg-coffee-500 text-white'
+                        : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                    }`}
+                  >
+                    {page}
+                  </button>
                 ))}
-              </tbody>
-            </table>
-          </div>
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-coffee-500 text-white rounded-lg hover:bg-coffee-600 disabled:bg-gray-300"
+                >
+                  পরের পেজ
+                </button>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>
