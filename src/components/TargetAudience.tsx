@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import fitnessConscious from '../assets/images/fitness-conscious.jpg';
+import diabeticPatient from '../assets/images/diabetic-patient.jpg';
+import familyConscious from '../assets/images/family-conscious.jpg';
 
 const TargetAudience = () => {
   const audiences = [
     {
       title: "ফিটনেস সচেতন",
       description: "জিম করেন, ওজন কমান, অথচ স্বাদ ছাড়তে চান না",
-      image: 'https://img.freepik.com/free-photo/attractive-fitness-couple-sporty-male-holds-barbell-slim-blond-female-holds-dumbbells-grey-background_613910-16001.jpg?semt=ais_items_boosted&w=740',
+      image: fitnessConscious,
     },
     {
       title: "ডায়াবেটিক পেশেন্ট",
       description: "নিয়ম মেনে চলেন, কিন্তু কখনো কখনো মিষ্টি খেতে ইচ্ছা হয়",
-      image: 'https://img.freepik.com/free-photo/close-up-doctor-with-stethoscope_23-2149191355.jpg?semt=ais_items_boosted&w=740',
+      image: diabeticPatient,
     },
     {
       title: "পরিবার সচেতন",
       description: "যারা বাচ্চাদের বা নিজের জন্য স্বাস্থ্যকর বিকল্প চান",
-      image: 'https://img.freepik.com/free-photo/family-autumn-park-man-black-jacket-cute-little-girl-with-parents_1157-44730.jpg?semt=ais_hybrid&w=740',
+      image: familyConscious,
     },
   ];
 

@@ -31,7 +31,7 @@ const Hero = () => {
           {images.map((image, index) => (
             <div
               key={index}
-              className="h-full flex-1 bg-cover bg-center" // Removed opacity to keep original colors
+              className="h-full flex-1 bg-cover bg-center" // Kept original colors
               style={{
                 backgroundImage: `url(${image})`,
                 width: `${100 / images.length}%`,
@@ -43,7 +43,7 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-        <div className="max-w-4xl mx-auto bg-white bg-opacity-70 rounded-xl p-8 shadow-lg"> {/* Kept semi-transparent white background for text clarity */}
+        <div className="max-w-4xl mx-auto bg-white bg-opacity-90 rounded-xl p-8 shadow-lg"> {/* Increased opacity to 90% for better text clarity */}
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight drop-shadow-md">
             নিশ্চিন্তে উপভোগ করুন প্রিয় <span className="text-coffee-500">কেক, স্ন্যাক্স পেস্ট্রি</span>
           </h1>

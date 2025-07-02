@@ -15,9 +15,9 @@ const Home = () => {
     <div className="min-h-screen">
       <Header />
       <Hero />
-      <Features />
+      <Products /> 
       <TargetAudience />
-      <Products />
+      <Features />
       <WhyZeroTreat />
       <Testimonials />
       <FAQ />
