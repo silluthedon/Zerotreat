@@ -16,9 +16,8 @@ const Home = () => {
       <Header />
       <Hero />
       <Products /> 
-      <TargetAudience />
       <Features />
-      <WhyZeroTreat />
+      <TargetAudience /> 
       <Testimonials />
       <FAQ />
       <Footer />
@@ -27,3 +26,5 @@ const Home = () => {
 };
 
 export default Home;
+
+<WhyZeroTreat />

@@ -21,13 +21,14 @@ const Admin = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data: sessionData } = await supabase.auth.getSession();
-        if (!sessionData.session) {
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
+        if (!sessionData.session || sessionData.session.user.user_metadata.role !== 'admin') {
+          setError('অননুমোদিত অ্যাক্সেস। শুধুমাত্র অ্যাডমিনরা এই পেজ অ্যাক্সেস করতে পারেন।');
           navigate('/login');
           return;
         }
 
-        // Fetch total count of orders
         const { count, error: countError } = await supabase
           .from('orders')
           .select('id', { count: 'exact', head: true });
@@ -38,7 +39,6 @@ const Admin = () => {
 
         setTotalOrders(count || 0);
 
-        // Fetch orders for the current page
         const start = (currentPage - 1) * itemsPerPage;
         const end = start + itemsPerPage - 1;
 
@@ -55,7 +55,7 @@ const Admin = () => {
         setOrders(data || []);
         setFilteredOrders(data || []);
       } catch (error) {
-        setError('অর্ডার লোড করতে ত্রুটি হয়েছে।');
+        setError('অর্ডার লোড করতে ত্রুটি হয়েছে: ' + error.message);
         console.error(error.message);
       } finally {
         setLoading(false);
@@ -107,7 +107,7 @@ const Admin = () => {
       setSortField(field);
       setSortOrder('asc');
     }
-    setCurrentPage(1); // Reset to first page on sort
+    setCurrentPage(1);
   };
 
   const handleStatusUpdate = async (orderId, field, value) => {
@@ -136,7 +136,7 @@ const Admin = () => {
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to first page when items per page changes
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -168,10 +168,8 @@ const Admin = () => {
     }
   };
 
-  // Calculate total pages
   const totalPages = Math.ceil(totalOrders / itemsPerPage);
 
-  // Generate page numbers for display
   const getPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 5;
@@ -455,7 +453,6 @@ const Admin = () => {
               </table>
             </div>
 
-            {/* Pagination Controls */}
             <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="text-gray-600">
                 মোট অর্ডার: {totalOrders} | পেজ {currentPage} এর মধ্যে {totalPages}

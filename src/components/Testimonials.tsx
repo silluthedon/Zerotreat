@@ -129,7 +129,6 @@ const Testimonials = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             গ্রাহকদের মতামত
           </h2>
-          <p className="text-lg text-gray-600">আমাদের সন্তুষ্ট গ্রাহকদের অভিজ্ঞতা শুনুন</p>
         </div>
 
         {loading ? (

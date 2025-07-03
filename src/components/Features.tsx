@@ -13,7 +13,7 @@ const Features = () => {
     },
     {
       title: "জিরো ট্রান্স ফ্যাট",
-      description: "হৃদয়ের জন্য সম্পূর্ণ নিরাপদ এবং স্বাস্থ্যকর",
+      description: "হার্টের জন্য সম্পূর্ণ নিরাপদ এবং স্বাস্থ্যকর",
       image: zeroTransFat,
     },
     {
@@ -66,7 +66,7 @@ const Features = () => {
                     <div className="w-full h-48 bg-gray-200 animate-pulse rounded-xl" />
                   )}
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 group-hover:bg-opacity-20 transition-opacity duration-300">
-                    <span className="text-white text-4xl font-bold drop-shadow-lg">✗</span>
+                    <span className="text-red-600 text-8xl font-bold drop-shadow-lg">✗</span>
                   </div>
                 </div>
 
@@ -86,6 +86,10 @@ const Features = () => {
           }
           .animate-fadeIn {
             animation: fadeIn 0.6s ease-out forwards;
+          }
+          /* Ensure cross sign size */
+          .text-8xl {
+            font-size: 18rem; /* Custom size for extra large cross */
           }
         `}
       </style>
