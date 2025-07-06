@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 
 const Hero = () => {
@@ -58,27 +57,19 @@ const Hero = () => {
           </h2>
           
           <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-3xl mx-auto drop-shadow-md">
-            ডায়াবেটিস, ওজন বৃদ্ধি কিংবা হৃদরোগের ভয়ে আর নয় প্রিয় খাবার থেকে দূরে থাকা। 
-            এবার থেকে খাওয়ার আনন্দ হবে এখন একদম <span className="font-semibold text-coffee-500">guilt-free!</span>
+            ক্ষতিকর চিনি, ট্রান্সফ্যাট ও প্রিজার্ভেটিভমুক্ত। তাই, ডায়াবেটিস, ওজন বৃদ্ধি কিংবা হৃদরোগ নিয়ে আর নেই ভয় 
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link 
-              to="/order" 
-              className="inline-flex items-center space-x-2 bg-coffee-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-coffee-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              <ShoppingBag className="h-5 w-5" />
-              <span>Order Now</span>
-            </Link>
-            
             <button 
               onClick={() => {
                 const element = document.getElementById('products');
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center space-x-2 border-2 border-coffee-500 text-coffee-500 px-8 py-4 rounded-full text-lg font-semibold hover:bg-coffee-100 transition-all duration-200"
+              className="inline-flex items-center space-x-2 bg-coffee-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-coffee-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              <span>View Products</span>
+              <ShoppingBag className="h-5 w-5" />
+              <span>Order Now</span>
             </button>
           </div>
         </div>
