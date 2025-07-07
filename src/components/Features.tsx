@@ -66,7 +66,7 @@ const Features = () => {
                     <div className="w-full h-48 bg-gray-200 animate-pulse rounded-xl" />
                   )}
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 group-hover:bg-opacity-20 transition-opacity duration-300">
-                    <span className="text-red-600 text-8xl font-bold drop-shadow-lg">✗</span>
+                    <span className="text-red-600 text-9xl font-semibold drop-shadow-md">✗</span>
                   </div>
                 </div>
 
