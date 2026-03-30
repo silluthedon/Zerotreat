@@ -3,12 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts":
-     {
-  "start": "node src/app.js",
-  "migrate": "knex migrate:latest"
-},
-  {
+  "scripts": {
+    "start": "node src/app.js",
+    "migrate": "knex migrate:latest",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
