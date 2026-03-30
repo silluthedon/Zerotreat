@@ -6,7 +6,7 @@
   "scripts":
      {
   "start": "node src/app.js",
-  "migrate": "knex migrate:latest"  
+  "migrate": "knex migrate:latest"
 },
   {
     "dev": "vite",
