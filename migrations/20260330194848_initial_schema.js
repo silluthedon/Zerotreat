@@ -1,6 +1,6 @@
-exports.up = function(knex) {
-  return knex.schema
-    .createTable('users', table => {
+export async function up(knex) {
+  await knex.schema
+    .createTable('users', (table) => {
       table.increments('id').primary();
       table.string('email').unique().notNullable();
       table.string('password_hash').notNullable();
@@ -8,7 +8,7 @@ exports.up = function(knex) {
       table.enu('role', ['customer', 'admin']).defaultTo('customer');
       table.timestamps(true, true);
     })
-    .createTable('products', table => {
+    .createTable('products', (table) => {
       table.increments('id').primary();
       table.string('name').notNullable();
       table.text('description');
@@ -18,7 +18,7 @@ exports.up = function(knex) {
       table.boolean('is_available').defaultTo(true);
       table.timestamps(true, true);
     })
-    .createTable('orders', table => {
+    .createTable('orders', (table) => {
       table.increments('id').primary();
       table.integer('user_id').references('id').inTable('users').onDelete('SET NULL');
       table.enu('status', ['placed', 'paid', 'shipped', 'delivered', 'canceled']).defaultTo('placed');
@@ -26,14 +26,14 @@ exports.up = function(knex) {
       table.jsonb('shipping_address');
       table.timestamps(true, true);
     })
-    .createTable('order_items', table => {
+    .createTable('order_items', (table) => {
       table.increments('id').primary();
       table.integer('order_id').references('id').inTable('orders').onDelete('CASCADE');
       table.integer('product_id').references('id').inTable('products').onDelete('RESTRICT');
       table.integer('quantity').notNullable();
       table.decimal('unit_price', 10, 2).notNullable();
     })
-    .createTable('admin_audit_log', table => {
+    .createTable('admin_audit_log', (table) => {
       table.increments('id').primary();
       table.integer('admin_user_id').references('id').inTable('users').onDelete('SET NULL');
       table.string('action').notNullable();
@@ -42,13 +42,13 @@ exports.up = function(knex) {
       table.jsonb('metadata');
       table.timestamp('created_at').defaultTo(knex.fn.now());
     });
-};
+}
 
-exports.down = function(knex) {
+export async function down(knex) {
   return knex.schema
     .dropTableIfExists('admin_audit_log')
     .dropTableIfExists('order_items')
     .dropTableIfExists('orders')
     .dropTableIfExists('products')
     .dropTableIfExists('users');
-};
+}
