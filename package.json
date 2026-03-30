@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/app.js",
-    "migrate": "knex migrate:latest",
+    "migrate": "knex migrate:latest --knexfile knexfile.cjs",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
